@@ -5,6 +5,7 @@ import (
 	_ "backend/docs"
 	"backend/routes"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -15,22 +16,31 @@ import (
 
 // @title    The Grid Backend API
 // @version  0.0
-// @host     YOUR_HOST_HERE   <-- swagger UI will infer this at runtime
+// @host     inferred at runtime
 // @BasePath /
 func main() {
-	// initialize database
+	// initialize DB
 	database.InitDatabase()
 
 	// create router
 	router := gin.Default()
 
-	// CORS config: read allowed origin from env (default to localhost:4200)
-	frontend := os.Getenv("FRONTEND_ORIGIN")
-	if frontend == "" {
-		frontend = "http://localhost:4200"
+	// build allowed-origins list
+	raw := os.Getenv("ALLOWED_ORIGINS")
+	var origins []string
+	if raw != "" {
+		origins = strings.Split(raw, ",")
+	} else {
+		origins = []string{
+			"http://localhost:4200",
+			"https://ghost-13302.github.io",
+			"https://swecrocs.github.io",
+		}
 	}
+
+	// apply CORS middleware
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{frontend},
+		AllowOrigins:     origins,
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -38,15 +48,15 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	// register your routes
+	// register routes
 	routes.AuthRoutes(router)
 	routes.UsersRoutes(router)
 	routes.ProjectsRoutes(router)
 
-	// swagger endpoint (optional)
+	// swagger (if you need it)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// figure out which port to listen on (default 8080 for local dev)
+	// pick up port for Render or default to 8080
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
