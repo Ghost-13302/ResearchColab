@@ -3,3 +3,4 @@
 
 # ignore OS-specific files
 .DS_Store
+backend/go.mod
