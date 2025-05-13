@@ -59,7 +59,7 @@ cd Crocs_SE_Project
   ```
 - Need access to the backend API docs? Visit
   ```
-  http://localhost:8080/swagger/index.html#/
+  https://researchcolab.onrender.com/swagger/index.html#/
   ```
 
 ## Team Members and Roles

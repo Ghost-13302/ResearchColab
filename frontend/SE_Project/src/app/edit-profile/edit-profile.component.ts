@@ -45,7 +45,9 @@ export class ProfileComponent implements OnInit {
 
   getProfile() {
     this.http
-      .get<any>(`http://localhost:8080/users/${this.userId}/profile`)
+      .get<any>(
+        `https://researchcolab.onrender.com/users/${this.userId}/profile`
+      )
       .subscribe({
         next: (data) => {
           this.profileForm.patchValue({
@@ -71,7 +73,10 @@ export class ProfileComponent implements OnInit {
       };
 
       this.http
-        .put<any>(`http://localhost:8080/users/${this.userId}/profile`, body)
+        .put<any>(
+          `https://researchcolab.onrender.com/users/${this.userId}/profile`,
+          body
+        )
         .subscribe({
           next: (res) => {
             console.log('Profile updated:', res);

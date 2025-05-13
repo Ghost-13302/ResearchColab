@@ -6,12 +6,12 @@ definitions:
         type: string
       role:
         enum:
-        - programmer
-        - editor
+          - programmer
+          - editor
         type: string
     required:
-    - email
-    - role
+      - email
+      - role
     type: object
   controllers.CollabInvitationResponse:
     properties:
@@ -47,7 +47,7 @@ definitions:
     properties:
       invitations:
         items:
-          $ref: '#/definitions/controllers.InvitationDetail'
+          $ref: "#/definitions/controllers.InvitationDetail"
         type: array
     type: object
   controllers.MessageResponse:
@@ -112,18 +112,18 @@ definitions:
         type: array
       status:
         enum:
-        - open
-        - in-progress
-        - completed
+          - open
+          - in-progress
+          - completed
         type: string
       title:
         type: string
       visibility:
         enum:
-        - private
+          - private
         type: string
     required:
-    - title
+      - title
     type: object
   controllers.ProjectCreationResponse:
     properties:
@@ -137,7 +137,7 @@ definitions:
     properties:
       projects:
         items:
-          $ref: '#/definitions/controllers.ProjectRetrievalResponse'
+          $ref: "#/definitions/controllers.ProjectRetrievalResponse"
         type: array
     type: object
   controllers.ProjectRetrievalResponse:
@@ -166,8 +166,8 @@ definitions:
       password:
         type: string
     required:
-    - email
-    - password
+      - email
+      - password
     type: object
   controllers.UserLoginResponse:
     properties:
@@ -193,7 +193,7 @@ definitions:
       user_id:
         type: integer
     type: object
-host: localhost:8080
+host: https://researchcolab.onrender.com
 info:
   contact: {}
   title: The Grid Backend API
@@ -202,366 +202,369 @@ paths:
   /auth/login:
     post:
       consumes:
-      - application/json
-      description: Authenticate user login with email and password, returns JWT token
+        - application/json
+      description:
+        Authenticate user login with email and password, returns JWT token
         on success.
       parameters:
-      - description: User credentials
-        in: body
-        name: requestBody
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.UserLoginRequest'
+        - description: User credentials
+          in: body
+          name: requestBody
+          required: true
+          schema:
+            $ref: "#/definitions/controllers.UserLoginRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.UserLoginResponse'
+            $ref: "#/definitions/controllers.UserLoginResponse"
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       summary: Login user
       tags:
-      - Authentication
+        - Authentication
   /auth/register:
     post:
       consumes:
-      - application/json
-      description: Create a new user account using user credentials. The provided
+        - application/json
+      description:
+        Create a new user account using user credentials. The provided
         password is hashed before storing to database. A blank user profile is created.
       parameters:
-      - description: User credentials
-        in: body
-        name: requestBody
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.UserRegistrationRequest'
+        - description: User credentials
+          in: body
+          name: requestBody
+          required: true
+          schema:
+            $ref: "#/definitions/controllers.UserRegistrationRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/controllers.UserRegistrationResponse'
+            $ref: "#/definitions/controllers.UserRegistrationResponse"
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       summary: Register a new user
       tags:
-      - Authentication
+        - Authentication
   /projects:
     get:
       consumes:
-      - application/json
+        - application/json
       description: Retrieves a list of all research projects
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.ProjectListResponse'
+            $ref: "#/definitions/controllers.ProjectListResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       summary: List all research projects
       tags:
-      - Projects
+        - Projects
     post:
       consumes:
-      - application/json
+        - application/json
       description: Creates a new research project and assigns the creator as an owner
       parameters:
-      - description: Project attributes
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.ProjectCreationRequest'
+        - description: Project attributes
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/controllers.ProjectCreationRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/controllers.ProjectCreationResponse'
+            $ref: "#/definitions/controllers.ProjectCreationResponse"
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       summary: Create research project
       tags:
-      - Projects
+        - Projects
   /projects/{id}:
     get:
       consumes:
-      - application/json
+        - application/json
       description: Retrieves details of a specific research project by ID
       parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: Project ID
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.ProjectRetrievalResponse'
+            $ref: "#/definitions/controllers.ProjectRetrievalResponse"
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       summary: Get research project details
       tags:
-      - Projects
+        - Projects
   /projects/{id}/collaborators:
     post:
       consumes:
-      - application/json
+        - application/json
       description: Sends an invitation to a user to collaborate on a project
       parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Invitation details
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.CollabInvitationRequest'
+        - description: Project ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Invitation details
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/controllers.CollabInvitationRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/controllers.CollabInvitationResponse'
+            $ref: "#/definitions/controllers.CollabInvitationResponse"
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "409":
           description: Conflict
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       summary: Invite a collaborator to a project
       tags:
-      - Projects
+        - Projects
   /projects/{id}/collaborators/invitations/{invitationId}/{action}:
     post:
       consumes:
-      - application/json
+        - application/json
       description: Allows a user to accept or reject a collaboration invitation
       parameters:
-      - description: Project ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Invitation ID
-        in: path
-        name: invitationId
-        required: true
-        type: integer
-      - description: Action (accept/reject)
-        in: path
-        name: action
-        required: true
-        type: string
+        - description: Project ID
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: Invitation ID
+          in: path
+          name: invitationId
+          required: true
+          type: integer
+        - description: Action (accept/reject)
+          in: path
+          name: action
+          required: true
+          type: string
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.MessageResponse'
+            $ref: "#/definitions/controllers.MessageResponse"
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       summary: Accept or reject a project invitation
       tags:
-      - Projects
+        - Projects
   /projects/invitations:
     get:
       consumes:
-      - application/json
+        - application/json
       description: Retrieves all pending invitations for the authenticated user
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.InvitationListResponse'
+            $ref: "#/definitions/controllers.InvitationListResponse"
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       summary: List pending invitations for the authenticated user
       tags:
-      - Projects
+        - Projects
   /projects/user:
     get:
       consumes:
-      - application/json
-      description: Retrieves a list of all projects where the user is either the owner
+        - application/json
+      description:
+        Retrieves a list of all projects where the user is either the owner
         or a collaborator
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.ProjectListResponse'
+            $ref: "#/definitions/controllers.ProjectListResponse"
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       summary: List projects the authenticated user is involved in
       tags:
-      - Projects
+        - Projects
   /users/{id}/profile:
     get:
       consumes:
-      - application/json
+        - application/json
       description: Retrieve user profile information by user ID.
       parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
+        - description: User ID
+          in: path
+          name: id
+          required: true
+          type: string
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.ProfileRetrievalResponse'
+            $ref: "#/definitions/controllers.ProfileRetrievalResponse"
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       summary: Get user profile
       tags:
-      - Users
+        - Users
     put:
       consumes:
-      - application/json
+        - application/json
       description: Update an existing user profile with new information.
       parameters:
-      - description: User ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Profile information
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/controllers.ProfileEditRequest'
+        - description: User ID
+          in: path
+          name: id
+          required: true
+          type: string
+        - description: Profile information
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/controllers.ProfileEditRequest"
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.ProfileEditResponse'
+            $ref: "#/definitions/controllers.ProfileEditResponse"
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "401":
           description: Unauthorized - Missing or invalid JWT token
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "403":
           description: Forbidden - Cannot modify another user's profile
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
+            $ref: "#/definitions/controllers.ErrorResponse"
       security:
-      - BearerAuth: []
+        - BearerAuth: []
       summary: Edit user profile
       tags:
-      - Users
+        - Users
 swagger: "2.0"

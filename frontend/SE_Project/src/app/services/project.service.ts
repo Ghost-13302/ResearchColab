@@ -29,7 +29,7 @@ export interface Invitation {
   providedIn: 'root',
 })
 export class ProjectService {
-  private baseUrl = 'http://localhost:8080/projects';
+  private baseUrl = 'https://researchcolab.onrender.com/projects';
 
   constructor(private http: HttpClient) {}
 

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = 'https://researchcolab.onrender.com/api';
 
   constructor(private http: HttpClient) {}
 

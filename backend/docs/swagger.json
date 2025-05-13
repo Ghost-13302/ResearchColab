@@ -1,858 +1,775 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "title": "The Grid Backend API",
-        "contact": {},
-        "version": "0.0"
-    },
-    "host": "localhost:8080",
-    "basePath": "/",
-    "paths": {
-        "/auth/login": {
-            "post": {
-                "description": "Authenticate user login with email and password, returns JWT token on success.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Login user",
-                "parameters": [
-                    {
-                        "description": "User credentials",
-                        "name": "requestBody",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.UserLoginRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.UserLoginResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
+  "swagger": "2.0",
+  "info": {
+    "title": "The Grid Backend API",
+    "contact": {},
+    "version": "0.0"
+  },
+  "host": "https://researchcolab.onrender.com",
+  "basePath": "/",
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "description": "Authenticate user login with email and password, returns JWT token on success.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Authentication"],
+        "summary": "Login user",
+        "parameters": [
+          {
+            "description": "User credentials",
+            "name": "requestBody",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.UserLoginRequest"
             }
-        },
-        "/auth/register": {
-            "post": {
-                "description": "Create a new user account using user credentials. The provided password is hashed before storing to database. A blank user profile is created.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Register a new user",
-                "parameters": [
-                    {
-                        "description": "User credentials",
-                        "name": "requestBody",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.UserRegistrationRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.UserRegistrationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/controllers.UserLoginResponse"
             }
-        },
-        "/projects": {
-            "get": {
-                "description": "Retrieves a list of all research projects",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "List all research projects",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ProjectListResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Creates a new research project and assigns the creator as an owner",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "Create research project",
-                "parameters": [
-                    {
-                        "description": "Project attributes",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ProjectCreationRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ProjectCreationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
             }
-        },
-        "/projects/invitations": {
-            "get": {
-                "description": "Retrieves all pending invitations for the authenticated user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "List pending invitations for the authenticated user",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.InvitationListResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
             }
-        },
-        "/projects/user": {
-            "get": {
-                "description": "Retrieves a list of all projects where the user is either the owner or a collaborator",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "List projects the authenticated user is involved in",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ProjectListResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
             }
-        },
-        "/projects/{id}": {
-            "get": {
-                "description": "Retrieves details of a specific research project by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "Get research project details",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Project ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ProjectRetrievalResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/projects/{id}/collaborators": {
-            "post": {
-                "description": "Sends an invitation to a user to collaborate on a project",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "Invite a collaborator to a project",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Project ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Invitation details",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.CollabInvitationRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.CollabInvitationResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "409": {
-                        "description": "Conflict",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/projects/{id}/collaborators/invitations/{invitationId}/{action}": {
-            "post": {
-                "description": "Allows a user to accept or reject a collaboration invitation",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Projects"
-                ],
-                "summary": "Accept or reject a project invitation",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Project ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Invitation ID",
-                        "name": "invitationId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Action (accept/reject)",
-                        "name": "action",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.MessageResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/users/{id}/profile": {
-            "get": {
-                "description": "Retrieve user profile information by user ID.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Get user profile",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ProfileRetrievalResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Update an existing user profile with new information.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Edit user profile",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Profile information",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ProfileEditRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ProfileEditResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized - Missing or invalid JWT token",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden - Cannot modify another user's profile",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ErrorResponse"
-                        }
-                    }
-                }
-            }
+          }
         }
+      }
     },
-    "definitions": {
-        "controllers.CollabInvitationRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "role"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string",
-                    "enum": [
-                        "programmer",
-                        "editor"
-                    ]
-                }
+    "/auth/register": {
+      "post": {
+        "description": "Create a new user account using user credentials. The provided password is hashed before storing to database. A blank user profile is created.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Authentication"],
+        "summary": "Register a new user",
+        "parameters": [
+          {
+            "description": "User credentials",
+            "name": "requestBody",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.UserRegistrationRequest"
             }
-        },
-        "controllers.CollabInvitationResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/controllers.UserRegistrationResponse"
             }
-        },
-        "controllers.ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string",
-                    "example": "Invalid request"
-                }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
             }
-        },
-        "controllers.InvitationDetail": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "inviter_name": {
-                    "type": "string"
-                },
-                "project_id": {
-                    "type": "integer"
-                },
-                "project_title": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
             }
-        },
-        "controllers.InvitationListResponse": {
-            "type": "object",
-            "properties": {
-                "invitations": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/controllers.InvitationDetail"
-                    }
-                }
-            }
-        },
-        "controllers.MessageResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "controllers.ProfileEditRequest": {
-            "type": "object",
-            "properties": {
-                "affiliation": {
-                    "type": "string"
-                },
-                "bio": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
-                "github": {
-                    "type": "string"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "projects": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "skills": {
-                    "type": "string"
-                }
-            }
-        },
-        "controllers.ProfileEditResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "controllers.ProfileRetrievalResponse": {
-            "type": "object",
-            "properties": {
-                "affiliation": {
-                    "type": "string"
-                },
-                "bio": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
-                "github": {
-                    "type": "string"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "projects": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "skills": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "controllers.ProjectCreationRequest": {
-            "type": "object",
-            "required": [
-                "title"
-            ],
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "required_skills": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "status": {
-                    "type": "string",
-                    "enum": [
-                        "open",
-                        "in-progress",
-                        "completed"
-                    ]
-                },
-                "title": {
-                    "type": "string"
-                },
-                "visibility": {
-                    "type": "string",
-                    "enum": [
-                        "private"
-                    ]
-                }
-            }
-        },
-        "controllers.ProjectCreationResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Project successfully created"
-                }
-            }
-        },
-        "controllers.ProjectListResponse": {
-            "type": "object",
-            "properties": {
-                "projects": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/controllers.ProjectRetrievalResponse"
-                    }
-                }
-            }
-        },
-        "controllers.ProjectRetrievalResponse": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "owner_id": {
-                    "type": "integer"
-                },
-                "required_skills": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "status": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "visibility": {
-                    "type": "string"
-                }
-            }
-        },
-        "controllers.UserLoginRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "controllers.UserLoginResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "token": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "controllers.UserRegistrationRequest": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "controllers.UserRegistrationResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "Registration successful"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
+          }
         }
+      }
+    },
+    "/projects": {
+      "get": {
+        "description": "Retrieves a list of all research projects",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Projects"],
+        "summary": "List all research projects",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/controllers.ProjectListResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new research project and assigns the creator as an owner",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Projects"],
+        "summary": "Create research project",
+        "parameters": [
+          {
+            "description": "Project attributes",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.ProjectCreationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/controllers.ProjectCreationResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/projects/invitations": {
+      "get": {
+        "description": "Retrieves all pending invitations for the authenticated user",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Projects"],
+        "summary": "List pending invitations for the authenticated user",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/controllers.InvitationListResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/projects/user": {
+      "get": {
+        "description": "Retrieves a list of all projects where the user is either the owner or a collaborator",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Projects"],
+        "summary": "List projects the authenticated user is involved in",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/controllers.ProjectListResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/projects/{id}": {
+      "get": {
+        "description": "Retrieves details of a specific research project by ID",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Projects"],
+        "summary": "Get research project details",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Project ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/controllers.ProjectRetrievalResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/projects/{id}/collaborators": {
+      "post": {
+        "description": "Sends an invitation to a user to collaborate on a project",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Projects"],
+        "summary": "Invite a collaborator to a project",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Project ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Invitation details",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.CollabInvitationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/controllers.CollabInvitationResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/projects/{id}/collaborators/invitations/{invitationId}/{action}": {
+      "post": {
+        "description": "Allows a user to accept or reject a collaboration invitation",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Projects"],
+        "summary": "Accept or reject a project invitation",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Project ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "description": "Invitation ID",
+            "name": "invitationId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Action (accept/reject)",
+            "name": "action",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/controllers.MessageResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}/profile": {
+      "get": {
+        "description": "Retrieve user profile information by user ID.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Users"],
+        "summary": "Get user profile",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "User ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/controllers.ProfileRetrievalResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Update an existing user profile with new information.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Users"],
+        "summary": "Edit user profile",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "User ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Profile information",
+            "name": "request",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/controllers.ProfileEditRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/controllers.ProfileEditResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Missing or invalid JWT token",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Forbidden - Cannot modify another user's profile",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/controllers.ErrorResponse"
+            }
+          }
+        }
+      }
     }
+  },
+  "definitions": {
+    "controllers.CollabInvitationRequest": {
+      "type": "object",
+      "required": ["email", "role"],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["programmer", "editor"]
+        }
+      }
+    },
+    "controllers.CollabInvitationResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "example": "Invalid request"
+        }
+      }
+    },
+    "controllers.InvitationDetail": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "inviter_name": {
+          "type": "string"
+        },
+        "project_id": {
+          "type": "integer"
+        },
+        "project_title": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.InvitationListResponse": {
+      "type": "object",
+      "properties": {
+        "invitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/controllers.InvitationDetail"
+          }
+        }
+      }
+    },
+    "controllers.MessageResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.ProfileEditRequest": {
+      "type": "object",
+      "properties": {
+        "affiliation": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "full_name": {
+          "type": "string"
+        },
+        "github": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "projects": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "skills": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.ProfileEditResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.ProfileRetrievalResponse": {
+      "type": "object",
+      "properties": {
+        "affiliation": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "full_name": {
+          "type": "string"
+        },
+        "github": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "projects": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "skills": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "integer"
+        }
+      }
+    },
+    "controllers.ProjectCreationRequest": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "required_skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": ["open", "in-progress", "completed"]
+        },
+        "title": {
+          "type": "string"
+        },
+        "visibility": {
+          "type": "string",
+          "enum": ["private"]
+        }
+      }
+    },
+    "controllers.ProjectCreationResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string",
+          "example": "Project successfully created"
+        }
+      }
+    },
+    "controllers.ProjectListResponse": {
+      "type": "object",
+      "properties": {
+        "projects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/controllers.ProjectRetrievalResponse"
+          }
+        }
+      }
+    },
+    "controllers.ProjectRetrievalResponse": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "owner_id": {
+          "type": "integer"
+        },
+        "required_skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "visibility": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.UserLoginRequest": {
+      "type": "object",
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.UserLoginResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "integer"
+        }
+      }
+    },
+    "controllers.UserRegistrationRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "controllers.UserRegistrationResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Registration successful"
+        },
+        "user_id": {
+          "type": "integer"
+        }
+      }
+    }
+  }
 }
