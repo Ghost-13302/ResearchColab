@@ -11,6 +11,8 @@ import { InvitationsModalComponent } from '../invitations-modal/invitations-moda
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
+  mobileMenuOpen = signal(false);
+
   // controls the profile dropdown
   dropdownOpen = signal(false);
 

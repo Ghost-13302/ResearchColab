@@ -1,4 +1,5 @@
-/* home.css */
+/* src/app/home/home.component.css */
+
 /* Content Container */
 .container {
   width: 90%;
@@ -245,7 +246,6 @@
   justify-content: flex-start;
 }
 
-/* Each expert card */
 .expert-card {
   background: white;
   border-radius: 20px;
@@ -282,8 +282,57 @@
   color: #555;
 }
 
+/* -------- TABLET OVERRIDES (<=768px) -------- */
 @media (max-width: 768px) {
+  /* Stack the two‐column collaboration into one */
   .collaboration__container {
     grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  /* Stack expert cards vertically */
+  .collaboration__experts {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .expert-card {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  /* Hide the large & medium intro icons */
+  .intro__icon--large,
+  .intro__icon--medium {
+    display: none;
+  }
+  .intro__icon--small {
+    width: 20vw;
+    top: 20%;
+    left: 5%;
+  }
+}
+
+/* -------- MOBILE OVERRIDES (<=480px) -------- */
+@media (max-width: 480px) {
+  .intro__title {
+    font-size: 2rem;
+  }
+  .intro__description {
+    font-size: 1rem;
+    padding: 0 0.5rem;
+  }
+  .intro__cta {
+    padding: 10px 20px;
+    font-size: 0.875rem;
+  }
+
+  .how-it-works__card,
+  .expert-card {
+    width: 90%;
+  }
+
+  .projects__cards {
+    flex-direction: column;
+    gap: 1rem;
   }
 }

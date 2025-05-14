@@ -1,3 +1,4 @@
+/* global container */
 .container {
   width: 90%;
   max-width: 1200px;
@@ -10,12 +11,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 50px;
+  padding: 10px 50px; /* restored */
   background-color: white;
-  z-index: 10;
-  flex-wrap: nowrap;
+  z-index: 20;
+  flex-wrap: nowrap; /* no wrap on desktop */
 }
 
+/* make the inner container also a flex row */
 .header .container {
   display: flex;
   align-items: center;
@@ -30,91 +32,28 @@
   flex-shrink: 0;
   cursor: pointer;
 }
-
 .header__logo-img {
   width: 30px;
   height: 30px;
 }
-
 .header__title {
   font-size: 20px;
   margin: 0;
 }
 
-.header__profile-dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.profile-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.profile-img {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid #1e293b;
-}
-
-.dropdown-menu {
-  position: absolute;
-  right: 0;
-  top: 45px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  min-width: 150px;
-  padding: 10px 0;
-  z-index: 10;
-}
-
-.dropdown-menu a {
-  padding: 10px 20px;
-  text-decoration: none;
-  color: black;
-  font-size: 14px;
-  cursor: pointer;
-  display: block;
-}
-
-.dropdown-menu a:hover {
-  background: #f1f1f1;
-}
-
-@media (max-width: 768px) {
-  .dropdown-menu {
-    right: -20px;
-  }
-}
-
-.header__profile-dropdown .dropdown-menu.open {
-  opacity: 1;
-  transform: translateY(0);
-  display: block;
-}
-
-/* Navigation */
+/* Nav links */
 .header__nav {
   flex-grow: 1;
   text-align: center;
 }
-
 .header__menu {
   display: flex;
-  list-style: none;
   gap: 30px;
+  justify-content: center;
   margin: 0;
   padding: 0;
-  justify-content: center;
+  list-style: none;
 }
-
 .header__menu-item a {
   text-decoration: none;
   color: black;
@@ -123,18 +62,16 @@
   cursor: pointer;
 }
 
-/* AUTH BUTTONS */
+/* Auth buttons */
 .header__auth {
   display: flex;
   align-items: center;
   gap: 5px;
-  width: auto;
   background: #e1d9c9;
   padding: 3px;
   border-radius: 25px;
   flex-shrink: 0;
 }
-
 .header__btn {
   padding: 8px 15px;
   border: none;
@@ -142,14 +79,103 @@
   cursor: pointer;
   font-weight: bold;
 }
-
 .header__btn--login {
   background: transparent;
   color: #000;
 }
-
 .header__btn--signup {
   background: #1e293b;
-  color: white;
+  color: #fff;
   border-radius: 20px;
+}
+
+/* Profile dropdown */
+.header__profile-dropdown {
+  position: relative;
+  flex-shrink: 0;
+}
+.profile-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.profile-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #1e293b;
+}
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  padding: 10px 0;
+  z-index: 30;
+}
+.dropdown-menu a {
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
+  cursor: pointer;
+  display: block;
+}
+.dropdown-menu a:hover {
+  background: #f1f1f1;
+}
+
+/* Mobile menu toggle button */
+.header__menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 5px;
+  flex-shrink: 0;
+}
+
+/* Mobile popup menu */
+.mobile-menu {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  z-index: 25;
+}
+.mobile-menu a {
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #000;
+  font-size: 16px;
+  cursor: pointer;
+}
+.mobile-menu a:hover {
+  background: #f1f1f1;
+}
+
+/* only hide desktop elements under 768px */
+@media (max-width: 768px) {
+  .header__nav,
+  .header__auth,
+  .header__profile-dropdown {
+    display: none;
+  }
+  .header__menu-toggle {
+    display: block;
+  }
 }

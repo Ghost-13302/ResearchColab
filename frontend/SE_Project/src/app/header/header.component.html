@@ -3,7 +3,7 @@
     <div class="header__logo" (click)="goHome()">
       <img
         src="assets/icons/the-grid-icon.svg"
-        alt="the-grid-logo"
+        alt="The Grid Logo"
         class="header__logo-img"
       />
       <h2 class="header__title">The Grid</h2>
@@ -11,9 +11,7 @@
 
     <nav class="header__nav">
       <ul class="header__menu">
-        <li class="header__menu-item">
-          <a (click)="goToAbout()">About</a>
-        </li>
+        <li class="header__menu-item"><a (click)="goToAbout()">About</a></li>
         <li class="header__menu-item">
           <a (click)="goToProjects()">Projects</a>
         </li>
@@ -23,30 +21,50 @@
       </ul>
     </nav>
 
-    <div class="header__auth">
-      <ng-container *ngIf="!isLoggedIn()">
-        <button class="header__btn header__btn--login" (click)="goToLogin()">
-          LOG IN
-        </button>
-        <button class="header__btn header__btn--signup" (click)="goToSignup()">
-          SIGN UP
-        </button>
-      </ng-container>
+    <div class="header__auth" *ngIf="!isLoggedIn()">
+      <button class="header__btn header__btn--login" (click)="goToLogin()">
+        LOG IN
+      </button>
+      <button class="header__btn header__btn--signup" (click)="goToSignup()">
+        SIGN UP
+      </button>
+    </div>
 
+    <div class="header__profile-dropdown" *ngIf="isLoggedIn()">
+      <button class="profile-btn" (click)="toggleDropdown()">
+        <img
+          src="assets/icons/user-icon.png"
+          alt="User Profile"
+          class="profile-img"
+        />
+      </button>
+      <div class="dropdown-menu" *ngIf="dropdownOpen()">
+        <a class="dropdown-item" (click)="goToProfile()">Edit Profile</a>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
+      </div>
+    </div>
+
+    <!-- mobile menu toggle -->
+    <button
+      class="header__menu-toggle"
+      (click)="mobileMenuOpen.set(!mobileMenuOpen())"
+      aria-label="Open menu"
+    >
+      ⋮
+    </button>
+
+    <!-- mobile pop-up -->
+    <div class="mobile-menu" *ngIf="mobileMenuOpen()">
+      <a (click)="goToAbout()">About</a>
+      <a (click)="goToProjects()">Projects</a>
+      <a (click)="goToInvitations()">Invitations</a>
+      <ng-container *ngIf="!isLoggedIn()">
+        <a (click)="goToLogin()">Log In</a>
+        <a (click)="goToSignup()">Sign Up</a>
+      </ng-container>
       <ng-container *ngIf="isLoggedIn()">
-        <div class="header__profile-dropdown">
-          <button class="profile-btn" (click)="toggleDropdown()">
-            <img
-              src="assets/icons/user-icon.png"
-              alt="User Profile"
-              class="profile-img"
-            />
-          </button>
-          <div class="dropdown-menu" *ngIf="dropdownOpen()">
-            <a class="dropdown-item" (click)="goToProfile()">Edit Profile</a>
-            <a class="dropdown-item" (click)="logout()">Logout</a>
-          </div>
-        </div>
+        <a (click)="goToProfile()">Profile</a>
+        <a (click)="logout()">Logout</a>
       </ng-container>
     </div>
   </div>
