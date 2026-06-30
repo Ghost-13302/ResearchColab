@@ -1,72 +1,91 @@
-# 🎓 The Grid: A Research Collaboration Platform
+# The Grid: Research Collaboration Platform
 
-## 🚀 Project Overview
+A platform for graduate students, postdocs, and faculty to discover collaborators and manage research projects.
 
-This project is a research collaboration platform designed to help **graduate students, postdocs, and faculty** connect across universities.
+## Live
 
-## 📌 Key Features
+| Service  | URL |
+|----------|-----|
+| Frontend | https://researchcolab.netlify.app |
+| API Docs (Swagger) | https://researchcolab-backend.onrender.com/swagger/index.html |
 
-- **Project Collaboration**: Users can create, join, and manage collaborative research projects.
-- **Search & Discovery**: Find collaborators and projects based on expertise and research interests.
-- and more...
+> The backend runs on Render's free tier and sleeps after 15 minutes of inactivity. The first request after a sleep period may take 30-60 seconds to respond.
 
-## Development Setup
+## Tech Stack
 
-#### 1. Prerequisites
+| Layer    | Technology |
+|----------|------------|
+| Frontend | Angular 19, Angular Material 3, TypeScript |
+| Backend  | Go, Gin, GORM |
+| Database | PostgreSQL (Render free tier) |
+| Hosting  | Netlify (frontend), Render (backend) |
 
-Ensure you have the following installed:
+## Features
 
-- **Git**
-- **Node.js & npm/yarn** (for frontend)
-- **Go** (for backend)
+- Register and log in with JWT-based authentication
+- Create and manage research projects
+- Invite collaborators by email
+- Accept or reject collaboration invitations
+- Edit your researcher profile (bio, skills, affiliation, GitHub)
+- Browse all public projects
 
-#### 2. Clone the repository
+## Local Development
+
+### Prerequisites
+
+- Node.js 18+ and npm
+- Go 1.21+
+- Git
+
+### Clone
 
 ```bash
-git clone https://github.com/swecrocs/Crocs_SE_Project.git
-cd Crocs_SE_Project
+git clone https://github.com/Ghost-13302/ResearchColab.git
+cd ResearchColab
 ```
 
-#### 3. Frontend Setup
+### Frontend
 
-- Navigate to the frontend folder
-  ```bash
-  cd frontend/SE_Project
-  ```
-- Install dependencies
-  ```bash
-  npm install   # or `npm ci` if you want a clean, lockfile‑exact install
-  ```
-- Run the dev server
-  ```bash
-  npm start     # should invoke `ng serve --open` and open http://localhost:4200
-  ```
-- After that you should see your app live at http://localhost:4200.
+```bash
+cd frontend/SE_Project
+npm install
+npm start
+```
 
-#### 4. Backend Setup
+App runs at http://localhost:4200. By default it points to the deployed backend at `https://researchcolab-backend.onrender.com`. To use a local backend instead, edit `src/environments/environment.ts` and set `apiUrl` to `http://localhost:8080`.
 
-- Navigate to the `backend` directory
-  ```bash
-  cd backend
-  ```
-- Install dependencies
-  ```bash
-  go mod tidy
-  ```
-- Run the backend server
-  ```bash
-  go run main.go
-  ```
-- Need access to the backend API docs? Visit
-  ```
-  https://researchcolab.onrender.com/swagger/index.html#/
-  ```
+### Backend
 
-## Team Members and Roles
+```bash
+cd backend
+go mod tidy
+go run main.go
+```
 
-| Name                     | Role      |
-| ------------------------ | --------- |
-| Gianfranco Cortes-Arroyo | Back-end  |
-| Sri Vaishnavi Borusu     | Back-end  |
-| Bo-Hao Wang              | Front-end |
-| Sanket Jadhao            | Front-end |
+Without a `DATABASE_URL` environment variable the backend falls back to a local SQLite file (`backend/users.db`). To use PostgreSQL locally, set `DATABASE_URL` to a valid Postgres connection string before running.
+
+Swagger UI is available at http://localhost:8080/swagger/index.html.
+
+## Project Structure
+
+```
+ResearchColab/
+├── frontend/SE_Project/   Angular 19 app
+│   └── src/app/           Components, services, routing
+├── backend/               Go + Gin API
+│   ├── controllers/       Route handlers
+│   ├── models/            GORM models
+│   ├── database/          DB init and migrations
+│   └── utils/             JWT and helpers
+├── render.yaml            Render Blueprint (backend + Postgres)
+└── netlify.toml           Netlify build config (frontend)
+```
+
+## Team
+
+| Name | Role |
+|------|------|
+| Gianfranco Cortes-Arroyo | Back-end |
+| Sri Vaishnavi Borusu | Back-end |
+| Bo-Hao Wang | Front-end |
+| Sanket Jadhao | Front-end |
