@@ -53,6 +53,11 @@ func main() {
 	routes.UsersRoutes(router)
 	routes.ProjectsRoutes(router)
 
+	// health check
+	router.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{"status": "ok"})
+	})
+
 	// swagger (if you need it)
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
