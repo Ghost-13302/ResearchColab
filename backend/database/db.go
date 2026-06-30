@@ -29,11 +29,13 @@ func InitDatabase() {
 		log.Println("Connected to SQLite (local dev)")
 	}
 
-	DB.AutoMigrate(
+	if err := DB.AutoMigrate(
 		&models.User{},
 		&models.UserProfile{},
 		&models.Project{},
 		&models.Collaborator{},
 		&models.Invitation{},
-	)
+	); err != nil {
+		log.Fatal("AutoMigrate failed: ", err)
+	}
 }

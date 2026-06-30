@@ -1,13 +1,15 @@
 package utils
 
 import (
-	verifier "github.com/AfterShip/email-verifier"
+	"net/mail"
+
+	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
-    "github.com/gin-gonic/gin"
 )
 
 func IsEmailValid(email string) bool {
-	return verifier.IsAddressValid(email)
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }
 
 // hash a plaintext password

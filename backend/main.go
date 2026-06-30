@@ -37,6 +37,7 @@ func main() {
 	} else {
 		origins = []string{
 			"http://localhost:4200",
+			"https://researchcolab.netlify.app",
 			"https://ghost-13302.github.io",
 			"https://swecrocs.github.io",
 		}

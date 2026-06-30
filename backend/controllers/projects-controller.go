@@ -476,9 +476,7 @@ func ListUserProjects(c *gin.Context) {
 	// Find projects where user is owner or collaborator
 	var projects []models.Project
 	err := database.DB.
-		Joins("LEFT JOIN collaborators ON projects.id = collaborators.project_id").
-		Where("projects.owner_id = ? OR collaborators.user_id = ?", userID, userID).
-		Preload("Collaborators").
+		Where("owner_id = ? OR id IN (SELECT project_id FROM collaborators WHERE user_id = ?)", userID, userID).
 		Find(&projects).Error
 
 	if err != nil {

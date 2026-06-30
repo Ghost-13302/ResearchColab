@@ -19,9 +19,13 @@ type Project struct {
 
 // Convert RequiredSkills from JSON to []string when reading from DB
 func (p *Project) GetRequiredSkills() []string {
+	if p.RequiredSkills == "" {
+		return []string{}
+	}
 	var skills []string
 	if err := json.Unmarshal([]byte(p.RequiredSkills), &skills); err != nil {
 		log.Println("Error unmarshaling RequiredSkills:", err)
+		return []string{}
 	}
 	return skills
 }

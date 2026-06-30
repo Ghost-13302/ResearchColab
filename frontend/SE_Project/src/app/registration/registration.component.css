@@ -82,3 +82,15 @@
   font-size: 0.48rem;
   padding: 10px;
 }
+
+/* ── Inline toast ─────────────────────────────── */
+.auth-toast {
+  font-family: var(--font-px);
+  font-size: 0.52rem;
+  line-height: 1.8;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border: 2px solid;
+}
+.auth-toast--ok  { color: var(--green); border-color: var(--green); background: rgba(0,255,65,0.08); }
+.auth-toast--err { color: var(--red);   border-color: var(--red);   background: rgba(255,0,60,0.08); }

@@ -20,5 +20,5 @@ services:
           name: researchcolab-db
           property: connectionString
       - key: ALLOWED_ORIGINS
-        value: https://swecrocs.github.io,https://ghost-13302.github.io,http://localhost:4200
+        value: https://researchcolab.netlify.app,https://swecrocs.github.io,https://ghost-13302.github.io,http://localhost:4200
     healthCheckPath: /health

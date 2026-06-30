@@ -9,14 +9,8 @@
       <!-- Email -->
       <div class="px-field">
         <label class="px-label" for="reg-email">EMAIL ADDRESS</label>
-        <input
-          id="reg-email"
-          class="px-input"
-          type="email"
-          formControlName="email"
-          placeholder="researcher@university.edu"
-          autocomplete="email"
-        />
+        <input id="reg-email" class="px-input" type="email" formControlName="email"
+          placeholder="researcher@university.edu" autocomplete="email" />
         <span class="px-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')">▸ Email is required.</span>
         <span class="px-error" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('email')">▸ Enter a valid email address.</span>
       </div>
@@ -25,14 +19,8 @@
       <div class="px-field">
         <label class="px-label" for="reg-pw">PASSWORD</label>
         <div class="input-row">
-          <input
-            id="reg-pw"
-            class="px-input"
-            [type]="hide() ? 'password' : 'text'"
-            formControlName="password"
-            placeholder="Min. 8 characters"
-            autocomplete="new-password"
-          />
+          <input id="reg-pw" class="px-input" [type]="hide() ? 'password' : 'text'"
+            formControlName="password" placeholder="Min. 8 characters" autocomplete="new-password" />
           <button type="button" class="toggle-pw" (click)="hide.set(!hide())">{{ hide() ? '👁' : '🙈' }}</button>
         </div>
         <span class="px-error" *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')">▸ Password is required.</span>
@@ -42,23 +30,21 @@
       <!-- Confirm Password -->
       <div class="px-field">
         <label class="px-label" for="reg-cpw">CONFIRM PASSWORD</label>
-        <input
-          id="reg-cpw"
-          class="px-input"
-          type="password"
-          formControlName="confirmPwd"
-          placeholder="Repeat your password"
-          autocomplete="new-password"
-        />
+        <input id="reg-cpw" class="px-input" type="password" formControlName="confirmPwd"
+          placeholder="Repeat your password" autocomplete="new-password" />
         <span class="px-error" *ngIf="form.get('confirmPwd')?.touched && form.hasError('passwordsMismatch')">▸ Passwords do not match.</span>
       </div>
 
+      <!-- Inline toast -->
+      <div class="auth-toast auth-toast--ok"  *ngIf="toast()?.type === 'ok'">{{ toast()?.msg }}</div>
+      <div class="auth-toast auth-toast--err" *ngIf="toast()?.type === 'err'">{{ toast()?.msg }}</div>
+
       <div class="auth-actions">
         <button type="submit" class="px-btn auth-actions__submit" [disabled]="loading()">
-          {{ loading() ? 'CREATING…' : '▶ CREATE ACCOUNT' }}
+          {{ loading() ? '[ CREATING… ]' : '▶ CREATE ACCOUNT' }}
         </button>
         <button type="button" class="px-btn px-btn--ghost auth-actions__alt" (click)="onLogin()">
-          ALREADY HAVE ACCOUNT?
+          ALREADY REGISTERED?
         </button>
       </div>
     </form>

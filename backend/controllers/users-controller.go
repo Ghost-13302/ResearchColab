@@ -36,28 +36,38 @@ type ProfileRetrievalResponse struct {
 func RetrieveUserProfile(c *gin.Context) {
 	userID := c.Param("id")
 
-	// get user and user profile in a single query
+	uid, err := strconv.ParseUint(userID, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid user ID"})
+		return
+	}
+
 	var user models.User
-	if err := database.DB.Preload("Profile").First(&user, userID).Error; err != nil {
+	if err := database.DB.First(&user, userID).Error; err != nil {
 		c.JSON(http.StatusNotFound, ErrorResponse{Error: "User not found"})
 		return
 	}
 
-	// create response with new fields
+	// auto-create profile if missing
+	var profile models.UserProfile
+	if err := database.DB.Where("user_id = ?", uid).FirstOrCreate(&profile, models.UserProfile{UserID: uint(uid)}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: "Failed to load profile"})
+		return
+	}
+
 	response := ProfileRetrievalResponse{
 		UserID:      user.ID,
 		Email:       user.Email,
-		FullName:    user.Profile.FullName,
-		Bio:         user.Profile.Bio,
-		Affiliation: user.Profile.Affiliation,
-		Skills:      user.Profile.Skills,
-		Role:        user.Profile.Role,
-		Projects:    user.Profile.Projects,
-		Location:    user.Profile.Location,
-		GitHub:      user.Profile.GitHub,
+		FullName:    profile.FullName,
+		Bio:         profile.Bio,
+		Affiliation: profile.Affiliation,
+		Skills:      profile.Skills,
+		Role:        profile.Role,
+		Projects:    profile.Projects,
+		Location:    profile.Location,
+		GitHub:      profile.GitHub,
 	}
 
-	// respond on success
 	c.JSON(http.StatusOK, response)
 }
 

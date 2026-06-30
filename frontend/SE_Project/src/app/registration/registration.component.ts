@@ -9,7 +9,6 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AccountService } from '../account.service';
 import { pageAnimation } from '../animations';
@@ -29,13 +28,13 @@ const passwordsMatchValidator: ValidatorFn = (group: AbstractControl): Validatio
   animations: [pageAnimation],
 })
 export class RegistrationComponent {
-  isModal      = input(false);
-  close        = output<void>();
+  isModal       = input(false);
+  close         = output<void>();
   switchToLogin = output<void>();
 
   hide    = signal(true);
   loading = signal(false);
-  private snackBar = inject(MatSnackBar);
+  toast   = signal<{ msg: string; type: 'ok' | 'err' } | null>(null);
 
   constructor(private router: Router, private accountService: AccountService) {}
 
@@ -54,19 +53,20 @@ export class RegistrationComponent {
       return;
     }
     this.loading.set(true);
+    this.toast.set(null);
     const { email, password } = this.form.value;
     this.accountService.register({ email: email!, password: password! }).subscribe({
       next: () => {
         this.loading.set(false);
-        this.snackBar.open('Account created! Please log in.', 'OK', {
-          duration: 4000, verticalPosition: 'top',
-        });
-        if (this.isModal()) { this.switchToLogin.emit(); } else { this.router.navigate(['/login']); }
+        this.toast.set({ msg: '✔ ACCOUNT CREATED! REDIRECTING TO LOGIN…', type: 'ok' });
+        setTimeout(() => {
+          if (this.isModal()) { this.switchToLogin.emit(); } else { this.router.navigate(['/login']); }
+        }, 1500);
       },
       error: (err) => {
         this.loading.set(false);
-        const msg = err?.error?.message ?? 'Registration failed. Please try again.';
-        this.snackBar.open(msg, 'Close', { duration: 5000, verticalPosition: 'top' });
+        const msg = err?.error?.error ?? err?.error?.message ?? 'REGISTRATION FAILED. PLEASE TRY AGAIN.';
+        this.toast.set({ msg: `✕ ${msg.toUpperCase()}`, type: 'err' });
       },
     });
   }

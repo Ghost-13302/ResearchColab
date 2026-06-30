@@ -32,12 +32,8 @@
           across institutions worldwide.
         </p>
         <div class="hero__ctas">
-          <button class="px-btn" (click)="goToProjects()">
-            ▶ GET STARTED
-          </button>
-          <button class="px-btn px-btn--outline" (click)="goToAbout()">
-            LEARN MORE
-          </button>
+          <button class="px-btn" (click)="goToProjects()">▶ GET STARTED</button>
+          <button class="px-btn px-btn--outline" (click)="goToAbout()">LEARN MORE</button>
         </div>
       </div>
     </div>
@@ -67,30 +63,21 @@
     <div class="how__grid">
       <div class="how__card px-card">
         <span class="how__step">01</span>
-        <img src="assets/icons/abstract-icon-1.svg" alt="" class="how__icon" />
+        <div class="how__icon-px how__icon-px--yellow">&#x25A3;</div>
         <h3 class="how__title">CREATE YOUR PROFILE</h3>
-        <p class="how__desc">
-          Set up a profile highlighting your research interests and expertise.
-          Let the right collaborators find you.
-        </p>
+        <p class="how__desc">Set up a profile highlighting your research interests and expertise. Let the right collaborators find you.</p>
       </div>
       <div class="how__card px-card">
         <span class="how__step">02</span>
-        <img src="assets/icons/abstract-icon-2.svg" alt="" class="how__icon" />
+        <div class="how__icon-px how__icon-px--cyan">&#x25CE;</div>
         <h3 class="how__title">DISCOVER PROJECTS</h3>
-        <p class="how__desc">
-          Browse ongoing projects and specialized communities.
-          Find your niche or explore new avenues of research.
-        </p>
+        <p class="how__desc">Browse ongoing projects and specialized communities. Find your niche or explore new avenues of research.</p>
       </div>
       <div class="how__card px-card">
         <span class="how__step">03</span>
-        <img src="assets/icons/abstract-icon-3.svg" alt="" class="how__icon" />
+        <div class="how__icon-px how__icon-px--green">&#x2B21;</div>
         <h3 class="how__title">COLLABORATE &amp; GROW</h3>
-        <p class="how__desc">
-          Connect with fellow researchers, exchange ideas, and work collectively
-          to publish groundbreaking findings.
-        </p>
+        <p class="how__desc">Connect with fellow researchers, exchange ideas, and work collectively to publish groundbreaking findings.</p>
       </div>
     </div>
   </section>
@@ -135,8 +122,39 @@
   <!-- ── CTA ───────────────────────────────────── -->
   <section class="cta-banner">
     <div class="container cta-banner__inner">
-      <div class="cta-banner__pixel-art" aria-hidden="true">
-        <div class="pixel-sprite"></div>
+      <div class="cta-banner__rocket" aria-hidden="true">
+        <svg class="pixel-rocket" viewBox="0 0 9 14" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="0" width="1" height="1" fill="#ffe81a"/>
+          <rect x="3" y="1" width="3" height="1" fill="#ffe81a"/>
+          <rect x="2" y="2" width="5" height="1" fill="#ffe81a"/>
+          <rect x="2" y="3" width="1" height="1" fill="#ffe81a"/>
+          <rect x="3" y="3" width="3" height="1" fill="#00e5ff"/>
+          <rect x="6" y="3" width="1" height="1" fill="#ffe81a"/>
+          <rect x="2" y="4" width="1" height="1" fill="#ffe81a"/>
+          <rect x="3" y="4" width="1" height="1" fill="#00e5ff"/>
+          <rect x="4" y="4" width="1" height="1" fill="#0d0d1a"/>
+          <rect x="5" y="4" width="1" height="1" fill="#00e5ff"/>
+          <rect x="6" y="4" width="1" height="1" fill="#ffe81a"/>
+          <rect x="2" y="5" width="1" height="1" fill="#ffe81a"/>
+          <rect x="3" y="5" width="3" height="1" fill="#00e5ff"/>
+          <rect x="6" y="5" width="1" height="1" fill="#ffe81a"/>
+          <rect x="2" y="6" width="5" height="1" fill="#ffe81a"/>
+          <rect x="0" y="7" width="1" height="1" fill="#ff003c"/>
+          <rect x="2" y="7" width="5" height="1" fill="#ffe81a"/>
+          <rect x="8" y="7" width="1" height="1" fill="#ff003c"/>
+          <rect x="0" y="8" width="2" height="1" fill="#ff003c"/>
+          <rect x="2" y="8" width="5" height="1" fill="#ffe81a"/>
+          <rect x="7" y="8" width="2" height="1" fill="#ff003c"/>
+          <rect x="0" y="9" width="2" height="1" fill="#ff003c"/>
+          <rect x="3" y="9" width="3" height="1" fill="#888888"/>
+          <rect x="7" y="9" width="2" height="1" fill="#ff003c"/>
+          <rect x="3" y="10" width="3" height="1" fill="#888888"/>
+          <rect x="3" y="11" width="3" height="1" fill="#00ff41"/>
+          <rect x="3" y="12" width="1" height="1" fill="#ff003c"/>
+          <rect x="4" y="12" width="1" height="1" fill="#ffe81a"/>
+          <rect x="5" y="12" width="1" height="1" fill="#ff003c"/>
+          <rect x="4" y="13" width="1" height="1" fill="#ff003c"/>
+        </svg>
       </div>
       <div class="cta-banner__text">
         <h2 class="cta-banner__title">READY TO JOIN<br />THE GRID?</h2>

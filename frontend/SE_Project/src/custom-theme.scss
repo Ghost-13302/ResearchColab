@@ -23,7 +23,20 @@ html {
 .mat-mdc-select-panel { border-radius: 0 !important; }
 .mat-mdc-snack-bar-container {
   border-radius: 0 !important;
+  border: 2px solid #ffe81a !important;
+}
+.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  background: #1a1a2e !important;
+  border-radius: 0 !important;
+}
+.mat-mdc-snack-bar-container .mdc-snackbar__label {
   font-family: 'Press Start 2P', monospace !important;
   font-size: 0.5rem !important;
   line-height: 1.8 !important;
+  color: #ffffff !important;
+}
+.mat-mdc-snack-bar-container .mat-mdc-button .mdc-button__label {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 0.5rem !important;
+  color: #ffe81a !important;
 }

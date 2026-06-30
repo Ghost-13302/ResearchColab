@@ -1,0 +1,9 @@
+[build]
+  base    = "frontend/SE_Project"
+  command = "npm run build"
+  publish = "dist/se-project/browser"
+
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
