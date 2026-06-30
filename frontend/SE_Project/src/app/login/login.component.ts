@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
       next: (res) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('userId', String(res.user_id));
+        localStorage.setItem('userEmail', email!);
         this.loading.set(false);
         if (this.isModal()) { this.close.emit(); }
         this.router.navigate(['/projects']);

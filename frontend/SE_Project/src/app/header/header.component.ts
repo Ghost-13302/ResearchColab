@@ -25,6 +25,13 @@ export class HeaderComponent {
     return !!localStorage.getItem('token');
   }
 
+  getDisplayName(): string {
+    const email = localStorage.getItem('userEmail');
+    if (!email) return 'PLAYER';
+    const name = email.split('@')[0].toUpperCase();
+    return name.length > 12 ? name.substring(0, 12) + '…' : name;
+  }
+
   navigate(path: string) {
     this.mobileMenuOpen.set(false);
     this.dropdownOpen.set(false);
@@ -69,6 +76,7 @@ export class HeaderComponent {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('userEmail');
     this.dropdownOpen.set(false);
     this.mobileMenuOpen.set(false);
     this.router.navigate(['/']);

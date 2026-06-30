@@ -3,7 +3,17 @@
 
     <!-- Logo -->
     <div class="px-header__logo" (click)="goHome()">
-      <img src="assets/icons/the-grid-icon.svg" alt="" class="px-header__icon" />
+      <svg class="px-header__icon" viewBox="0 0 9 9" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0"   y="0"   width="2.2" height="2.2" fill="currentColor"/>
+        <rect x="3.4" y="0"   width="2.2" height="2.2" fill="currentColor"/>
+        <rect x="6.8" y="0"   width="2.2" height="2.2" fill="currentColor"/>
+        <rect x="0"   y="3.4" width="2.2" height="2.2" fill="currentColor"/>
+        <rect x="3.4" y="3.4" width="2.2" height="2.2" fill="currentColor"/>
+        <rect x="6.8" y="3.4" width="2.2" height="2.2" fill="currentColor"/>
+        <rect x="0"   y="6.8" width="2.2" height="2.2" fill="currentColor"/>
+        <rect x="3.4" y="6.8" width="2.2" height="2.2" fill="currentColor"/>
+        <rect x="6.8" y="6.8" width="2.2" height="2.2" fill="currentColor"/>
+      </svg>
       <span class="px-header__brand">THE GRID</span>
     </div>
 
@@ -23,7 +33,7 @@
     <!-- Profile dropdown -->
     <div class="px-header__user" *ngIf="isLoggedIn()">
       <button class="px-user-btn" (click)="toggleDropdown()">
-        <span class="px-user-btn__text">▶ PLAYER</span>
+        <span class="px-user-btn__text">▶ {{ getDisplayName() }}</span>
         <span class="px-user-btn__arrow">{{ dropdownOpen() ? '▲' : '▼' }}</span>
       </button>
       <div class="px-dropdown" *ngIf="dropdownOpen()">
