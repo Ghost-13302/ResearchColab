@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter, signal } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectService, Invitation } from '../services/project.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class InvitationsModalComponent implements OnInit {
 
   invitations = signal<Invitation[]>([]);
   loading = signal(true);
-  error = signal<string | null>(null);
+  private snackBar = inject(MatSnackBar);
 
   constructor(private projectService: ProjectService) {}
 
@@ -25,24 +26,35 @@ export class InvitationsModalComponent implements OnInit {
 
   loadInvitations() {
     this.loading.set(true);
-    this.projectService.getInvitations().subscribe((resp) => {
-      this.loading.set(false);
-      const invs = resp.invitations || [];
-      this.invitations.set(invs);
-      this.error.set(invs.length ? null : 'No pending invitations.');
+    this.projectService.getInvitations().subscribe({
+      next: (resp) => {
+        this.loading.set(false);
+        this.invitations.set(resp.invitations || []);
+      },
+      error: () => {
+        this.loading.set(false);
+        this.snackBar.open('Failed to load invitations.', 'Close', {
+          duration: 4000,
+          verticalPosition: 'top',
+        });
+      },
     });
   }
 
   accept(inv: Invitation) {
-    this.projectService
-      .respondToInvitation(inv.project_id, inv.id, 'accept')
-      .subscribe(() => this.loadInvitations());
+    this.projectService.respondToInvitation(inv.project_id, inv.id, 'accept').subscribe({
+      next: () => this.loadInvitations(),
+      error: () =>
+        this.snackBar.open('Failed to accept invitation.', 'Close', { duration: 3000 }),
+    });
   }
 
   reject(inv: Invitation) {
-    this.projectService
-      .respondToInvitation(inv.project_id, inv.id, 'reject')
-      .subscribe(() => this.loadInvitations());
+    this.projectService.respondToInvitation(inv.project_id, inv.id, 'reject').subscribe({
+      next: () => this.loadInvitations(),
+      error: () =>
+        this.snackBar.open('Failed to reject invitation.', 'Close', { duration: 3000 }),
+    });
   }
 
   onClose() {

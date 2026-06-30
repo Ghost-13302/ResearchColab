@@ -1,158 +1,156 @@
-<!-- src/app/home/home.component.html -->
-<body>
-  <!-- HEADER SECTION -->
+<div @pageAnimation>
   <app-header></app-header>
 
-  <section class="intro-how-wrapper">
-    <!-- INTRO SECTION -->
-    <section class="intro">
-      <div class="container">
-        <div class="intro__content">
-          <h1 class="intro__title">
-            Where Brilliant
-            <span class="intro__title-break">Minds Connect.</span>
-          </h1>
-          <p class="intro__description">
-            Join a global network of top researchers, collaborate on projects,
-            and fast-track discoveries— <em>together.</em>
+  <!-- ── HERO ──────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero__bg-grid"></div>
+    <div class="hero__content container">
+      <div class="hero__terminal">
+        <div class="terminal__bar">
+          <span class="terminal__dot terminal__dot--red"></span>
+          <span class="terminal__dot terminal__dot--yellow"></span>
+          <span class="terminal__dot terminal__dot--green"></span>
+          <span class="terminal__bar-title">the-grid.sh</span>
+        </div>
+        <div class="terminal__body">
+          <p class="terminal__line"><span class="terminal__prompt">$</span> whoami</p>
+          <p class="terminal__output">RESEARCHER_NODE_7829</p>
+          <p class="terminal__line"><span class="terminal__prompt">$</span> connect --network THE_GRID</p>
+          <p class="terminal__output">Connecting to 1,200+ researchers...</p>
+          <p class="terminal__output terminal__output--success">✔ CONNECTION ESTABLISHED</p>
+          <p class="terminal__line">
+            <span class="terminal__prompt">$</span>
+            <span [class.hidden]="!cursorVisible()">█</span>
           </p>
-          <button class="intro__cta">Get Started</button>
         </div>
       </div>
-      <div class="intro__background">
-        <img
-          src="assets/icons/the-grid-icon-outlined.svg"
-          alt="Decorative Icon"
-          class="intro__icon intro__icon--small"
-        />
-        <img
-          src="assets/icons/the-grid-icon-outlined.svg"
-          alt="Decorative Icon"
-          class="intro__icon intro__icon--medium"
-        />
-        <img
-          src="assets/icons/the-grid-icon-outlined.svg"
-          alt="Decorative Icon"
-          class="intro__icon intro__icon--large"
-        />
-      </div>
-    </section>
 
-    <!-- HOW IT WORKS SECTION -->
-    <section class="how-it-works">
-      <div class="container">
-        <h2 class="how-it-works__title">How It Works</h2>
-        <div class="how-it-works__cards">
-          <article class="how-it-works__card">
-            <img
-              src="assets/icons/abstract-icon-1.svg"
-              alt="Step 1"
-              class="how-it-works__icon"
-            />
-            <h3 class="how-it-works__card-title">Create Your Profile</h3>
-            <p class="how-it-works__card-description">
-              Set up a detailed profile highlighting your research interests and
-              expertise. This helps like-minded researchers find and connect
-              with you.
-            </p>
-          </article>
-          <article class="how-it-works__card">
-            <img
-              src="assets/icons/abstract-icon-2.svg"
-              alt="Step 2"
-              class="how-it-works__icon"
-            />
-            <h3 class="how-it-works__card-title">Discover Opportunities</h3>
-            <p class="how-it-works__card-description">
-              Browse ongoing projects, discussion boards, and specialized
-              communities. Find your niche or explore new avenues of research.
-            </p>
-          </article>
-          <article class="how-it-works__card">
-            <img
-              src="assets/icons/abstract-icon-3.svg"
-              alt="Step 3"
-              class="how-it-works__icon"
-            />
-            <h3 class="how-it-works__card-title">Collaborate & Grow</h3>
-            <p class="how-it-works__card-description">
-              Connect with fellow researchers, exchange ideas, and work
-              collectively to publish groundbreaking findings.
-            </p>
-          </article>
+      <div class="hero__text">
+        <h1 class="hero__title">WHERE<br />BRILLIANT<br /><span class="hero__title--accent">MINDS</span><br />CONNECT.</h1>
+        <p class="hero__desc">
+          A research collaboration network for graduate students, postdocs, and faculty
+          across institutions worldwide.
+        </p>
+        <div class="hero__ctas">
+          <button class="px-btn" (click)="goToProjects()">
+            ▶ GET STARTED
+          </button>
+          <button class="px-btn px-btn--outline" (click)="goToAbout()">
+            LEARN MORE
+          </button>
         </div>
       </div>
-    </section>
+    </div>
   </section>
 
-  <!-- FIND PROJECTS SECTION -->
-  <section class="projects">
+  <!-- ── STATS ─────────────────────────────────── -->
+  <section class="stats">
+    <div class="container stats__grid">
+      <div class="stats__item px-card">
+        <span class="stats__number">1,200<span class="stats__plus">+</span></span>
+        <span class="stats__label">RESEARCHERS</span>
+      </div>
+      <div class="stats__item px-card">
+        <span class="stats__number">340<span class="stats__plus">+</span></span>
+        <span class="stats__label">PROJECTS</span>
+      </div>
+      <div class="stats__item px-card">
+        <span class="stats__number">85<span class="stats__plus">+</span></span>
+        <span class="stats__label">INSTITUTIONS</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ──────────────────────────── -->
+  <section class="how container">
+    <h2 class="section-title">// HOW IT WORKS</h2>
+    <div class="how__grid">
+      <div class="how__card px-card">
+        <span class="how__step">01</span>
+        <img src="assets/icons/abstract-icon-1.svg" alt="" class="how__icon" />
+        <h3 class="how__title">CREATE YOUR PROFILE</h3>
+        <p class="how__desc">
+          Set up a profile highlighting your research interests and expertise.
+          Let the right collaborators find you.
+        </p>
+      </div>
+      <div class="how__card px-card">
+        <span class="how__step">02</span>
+        <img src="assets/icons/abstract-icon-2.svg" alt="" class="how__icon" />
+        <h3 class="how__title">DISCOVER PROJECTS</h3>
+        <p class="how__desc">
+          Browse ongoing projects and specialized communities.
+          Find your niche or explore new avenues of research.
+        </p>
+      </div>
+      <div class="how__card px-card">
+        <span class="how__step">03</span>
+        <img src="assets/icons/abstract-icon-3.svg" alt="" class="how__icon" />
+        <h3 class="how__title">COLLABORATE &amp; GROW</h3>
+        <p class="how__desc">
+          Connect with fellow researchers, exchange ideas, and work collectively
+          to publish groundbreaking findings.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ─────────────────────────────── -->
+  <section class="features">
     <div class="container">
-      <div class="projects__intro">
-        <h2 class="projects__title">Find Projects <br />by Subfield</h2>
-        <p class="projects__subheading">
-          <strong>Explore the Research Frontier</strong>
-        </p>
-        <p class="projects__description">
-          Delve into a variety of specialized fields—from quantum computing to
-          medical engineering—and discover projects that match your passion and
-          expertise.
-        </p>
-      </div>
-      <div class="projects__cards">
-        <!-- Future project cards go here -->
+      <h2 class="section-title section-title--green">// FEATURES</h2>
+      <div class="features__grid">
+        <div class="feature__item">
+          <span class="feature__icon">◆</span>
+          <div>
+            <h4 class="feature__title">SKILL MATCHING</h4>
+            <p class="feature__desc">Find projects that need your exact skill set.</p>
+          </div>
+        </div>
+        <div class="feature__item">
+          <span class="feature__icon">◆</span>
+          <div>
+            <h4 class="feature__title">INVITE SYSTEM</h4>
+            <p class="feature__desc">Send and receive collaboration invitations with role control.</p>
+          </div>
+        </div>
+        <div class="feature__item">
+          <span class="feature__icon">◆</span>
+          <div>
+            <h4 class="feature__title">VISIBILITY CONTROL</h4>
+            <p class="feature__desc">Keep projects private or share them with the network.</p>
+          </div>
+        </div>
+        <div class="feature__item">
+          <span class="feature__icon">◆</span>
+          <div>
+            <h4 class="feature__title">CROSS-INSTITUTION</h4>
+            <p class="feature__desc">Collaborate beyond your university or discipline.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- COLLABORATE WITH EXPERTS SECTION -->
-  <section class="collaboration">
-    <div class="container collaboration__container">
-      <!-- Intro Content -->
-      <div class="collaboration__intro">
-        <h2 class="collaboration__title">Collaborate</h2>
-        <p class="collaboration__subheading">
-          <strong>Network with Leading Scholars</strong>
-        </p>
-        <p class="collaboration__description">
-          Expand your professional circle and learn from the best. Join forces
-          with renowned researchers, share insights, and push the boundaries of
-          discovery.
-        </p>
+  <!-- ── CTA ───────────────────────────────────── -->
+  <section class="cta-banner">
+    <div class="container cta-banner__inner">
+      <div class="cta-banner__pixel-art" aria-hidden="true">
+        <div class="pixel-sprite"></div>
       </div>
-
-      <!-- Expert Cards -->
-      <div class="collaboration__experts">
-        <article class="expert-card">
-          <img
-            src="assets/images/expert1.jpg"
-            alt="Expert 1"
-            class="expert-card__img"
-          />
-          <div class="expert-card__info">
-            <strong class="expert-card__name">Alin Dobra</strong>
-            <p class="expert-card__details">
-              Databases & Cybersecurity | 75+ Publications
-            </p>
-            <p class="expert-card__institution">University of Florida</p>
-          </div>
-        </article>
-
-        <article class="expert-card">
-          <img
-            src="assets/images/expert2.jpg"
-            alt="Expert 2"
-            class="expert-card__img"
-          />
-          <div class="expert-card__info">
-            <strong class="expert-card__name">Petar Veličković</strong>
-            <p class="expert-card__details">
-              Deep Learning | 100+ Publications
-            </p>
-            <p class="expert-card__institution">University of Cambridge</p>
-          </div>
-        </article>
+      <div class="cta-banner__text">
+        <h2 class="cta-banner__title">READY TO JOIN<br />THE GRID?</h2>
+        <p class="cta-banner__sub">Start collaborating with researchers worldwide today.</p>
+        <button class="px-btn" (click)="goToProjects()">▶ ENTER THE GRID</button>
       </div>
     </div>
   </section>
-</body>
+
+  <!-- ── FOOTER ────────────────────────────────── -->
+  <footer class="px-footer">
+    <div class="container px-footer__inner">
+      <span class="px-footer__brand">THE GRID &copy; 2025</span>
+      <span class="px-footer__made">MADE WITH ♥ BY UF RESEARCHERS</span>
+    </div>
+  </footer>
+</div>

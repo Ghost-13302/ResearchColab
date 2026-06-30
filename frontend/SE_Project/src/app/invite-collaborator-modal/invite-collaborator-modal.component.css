@@ -1,112 +1,67 @@
-.modal-backdrop {
+.px-modal-backdrop {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 5000;
-}
-
-.modal {
-  background: #e1d9c9;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 400px;
   padding: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.modal-header {
+.px-modal {
+  background: var(--bg-2);
+  border: 3px solid var(--cyan);
+  box-shadow: 6px 6px 0 0 var(--cyan);
+  width: 100%;
+  max-width: 440px;
+}
+
+.px-modal__header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 2px solid var(--cyan);
 }
 
-.modal-header h2 {
+.px-modal__title {
+  font-family: var(--font-px);
+  font-size: 0.7rem;
+  color: var(--cyan);
   margin: 0;
-  color: #1e293b;
 }
 
-.close-btn {
-  background: transparent;
+.px-modal__close {
+  background: none;
   border: none;
-  font-size: 20px;
+  color: var(--text-dim);
+  font-size: 1.1rem;
   cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color 0.15s;
 }
+.px-modal__close:hover { color: var(--red); }
 
-.modal-form {
+.px-modal__body {
+  padding: 22px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 4px;
 }
 
-.modal-form label {
-  font-weight: 600;
-  margin-bottom: 5px;
+.inv-success {
+  font-family: var(--font-px);
+  font-size: 0.55rem;
+  color: var(--green);
+  margin: 4px 0;
 }
 
-.modal-form .required {
-  color: red;
-}
-
-.modal-form input,
-.modal-form select {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 100%;
-  font-size: 14px;
-  outline: none;
-}
-
-.modal-form input:focus,
-.modal-form select:focus {
-  border-color: #1e293b;
-  box-shadow: 0 0 0 2px rgba(30, 41, 59, 0.2);
-}
-
-.actions {
+.px-modal__footer {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.actions button {
-  padding: 10px 20px;
-  border-radius: 25px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.actions button[type="button"] {
-  background-color: #aaa;
-  color: #fff;
-}
-
-.actions button[type="submit"] {
-  background-color: #1e293b;
-  color: #fff;
-}
-
-.actions button[type="submit"]:hover {
-  background-color: #16202a;
-}
-
-.error {
-  color: #e11d48;
-  font-size: 13px;
-  margin-top: 5px;
-}
-
-.success {
-  color: green;
-  font-size: 13px;
-  margin-top: 5px;
+  gap: 12px;
+  margin-top: 18px;
+  flex-wrap: wrap;
 }

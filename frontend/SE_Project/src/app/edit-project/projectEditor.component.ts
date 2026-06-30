@@ -1,9 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule, TitleCasePipe } from '@angular/common';
+import { pageAnimation } from '../animations';
 import {
   FormBuilder,
   FormGroup,
-  NgForm,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -11,10 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import {
-  MatSnackBar,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HeaderComponent } from '../header/header.component';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -26,8 +23,10 @@ import { InviteCollaboratorModalComponent } from '../invite-collaborator-modal/i
 @Component({
   selector: 'app-project_editor',
   standalone: true,
+  animations: [pageAnimation],
   imports: [
     CommonModule,
+    TitleCasePipe,
     ReactiveFormsModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -41,9 +40,8 @@ import { InviteCollaboratorModalComponent } from '../invite-collaborator-modal/i
   templateUrl: './projectEditor.component.html',
   styleUrls: ['./projectEditor.component.css'],
 })
-export class ProjectEditorComponent {
-  private registerPrompt = inject(MatSnackBar);
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
+export class ProjectEditorComponent implements OnInit {
+  private snackBar = inject(MatSnackBar);
 
   projectForm!: FormGroup;
   project: Project | null = null;
@@ -52,6 +50,7 @@ export class ProjectEditorComponent {
   readonly addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   skills = signal<string[]>([]);
+  showInviteModal = signal(false);
 
   statusOptions = ['open', 'closed'];
   visibilityOptions = ['private', 'public'];
@@ -73,14 +72,8 @@ export class ProjectEditorComponent {
     this.loadProject();
   }
 
-  showInviteModal = signal(false);
-
-  openInviteModal() {
-    this.showInviteModal.set(true);
-  }
-  closeInviteModal() {
-    this.showInviteModal.set(false);
-  }
+  openInviteModal() { this.showInviteModal.set(true); }
+  closeInviteModal() { this.showInviteModal.set(false); }
 
   loadProject() {
     this.route.paramMap.subscribe((params) => {
@@ -88,14 +81,19 @@ export class ProjectEditorComponent {
       this.projectId = idParam ? +idParam : 0;
 
       if (this.projectId) {
-        this.projectService.getProjectById(this.projectId).subscribe((data) => {
-          if (data !== null) {
+        this.projectService.getProjectById(this.projectId).subscribe({
+          next: (data) => {
             this.projectForm.patchValue(data);
-            if (data.required_skills.length > 0)
+            if (data.required_skills?.length) {
               this.skills.set(data.required_skills);
-          } else {
-            this.handlePromptOpen('Project not found', 'close');
-          }
+            }
+          },
+          error: () => {
+            this.snackBar.open('Project not found.', 'Close', {
+              duration: 4000,
+              verticalPosition: 'top',
+            });
+          },
         });
       }
     });
@@ -103,69 +101,47 @@ export class ProjectEditorComponent {
 
   handleSave() {
     if (this.projectForm.invalid) {
-      this.handlePromptOpen('Please fill out required fields.', 'close');
+      this.projectForm.markAllAsTouched();
+      this.snackBar.open('Please fill out required fields.', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+      });
       return;
     }
 
-    // Get the form values
-    const formValue = this.projectForm.value;
-
-    // Add project id to form value
     const updatedProject: Project = {
-      ...formValue,
+      ...this.projectForm.value,
       id: this.projectId,
+      required_skills: this.skills(),
     };
 
-    this.projectService
-      .updateProject(this.projectId, updatedProject)
-      .subscribe({
-        next: () => {
-          this.handlePromptOpen('Project saved successfully!', 'OK');
-        },
-        error: (err) => {
-          console.error('Failed to save project:', err);
-          this.handlePromptOpen('Failed to save project.', 'close');
-        },
-      });
+    this.projectService.updateProject(this.projectId, updatedProject).subscribe({
+      next: () => {
+        this.snackBar.open('Project saved successfully!', 'OK', {
+          duration: 3000,
+          verticalPosition: 'top',
+        });
+      },
+      error: () => {
+        this.snackBar.open('Failed to save project.', 'Close', {
+          duration: 4000,
+          verticalPosition: 'top',
+        });
+      },
+    });
   }
 
   handleAddSkill(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-
-    // Add skill
     if (value) {
       this.skills.update((skills) => [...skills, value]);
-      // Update form
       this.projectForm.get('required_skills')?.setValue([...this.skills()]);
     }
-
-    // Clear the input value
     event.chipInput!.clear();
   }
 
   handleDeleteSkill(skill: string) {
-    this.skills.update((skills) => {
-      const index = skills.indexOf(skill);
-      if (index < 0) {
-        return skills;
-      }
-
-      skills.splice(index, 1);
-      return [...skills];
-    });
-    // Update form
+    this.skills.update((skills) => skills.filter((s) => s !== skill));
     this.projectForm.get('required_skills')?.setValue([...this.skills()]);
-  }
-
-  // show feedback prompt
-  handlePromptOpen(message: string, action: string) {
-    this.registerPrompt.open(message, action, {
-      verticalPosition: this.verticalPosition,
-      duration: 5000,
-    });
-  }
-
-  isNotEmptyString(str: string) {
-    return str && str.length > 0;
   }
 }

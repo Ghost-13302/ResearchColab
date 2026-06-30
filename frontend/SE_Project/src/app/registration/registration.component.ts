@@ -1,89 +1,81 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AccountService } from '../account.service';
-import {MatSnackBar, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import { pageAnimation } from '../animations';
 
+const passwordsMatchValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+  const pw      = group.get('password')?.value;
+  const confirm = group.get('confirmPwd')?.value;
+  return pw && confirm && pw !== confirm ? { passwordsMismatch: true } : null;
+};
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatButtonModule, 
-            MatFormFieldModule, MatIconModule, MatInputModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
+  animations: [pageAnimation],
 })
-
 export class RegistrationComponent {
-    hide = signal(true);
-    private registerPrompt = inject(MatSnackBar);
-    verticalPosition: MatSnackBarVerticalPosition = 'top';
+  isModal      = input(false);
+  close        = output<void>();
+  switchToLogin = output<void>();
 
-    constructor(
-        private router: Router,
-        private accountService: AccountService
-    ){}
-    
-    form = new FormGroup({
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required]),
-        confirmPwd: new FormControl('', [Validators.required])
-    })
+  hide    = signal(true);
+  loading = signal(false);
+  private snackBar = inject(MatSnackBar);
 
-    getFormValue () {
-        const value = this.form?.value;
-        this.handleRegister(value);
+  constructor(private router: Router, private accountService: AccountService) {}
+
+  form = new FormGroup(
+    {
+      email:      new FormControl('', [Validators.required, Validators.email]),
+      password:   new FormControl('', [Validators.required, Validators.minLength(8)]),
+      confirmPwd: new FormControl('', [Validators.required]),
+    },
+    { validators: passwordsMatchValidator }
+  );
+
+  submit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
-
-    // new register
-    handleRegister (data: any) {
-        if (this.checkConfirmPwd(data)){
-            const newValue = { email: data?.email, password: data?.password };
-            this.accountService.register(newValue).subscribe({
-                next: (response) => {
-                    this.handlePromptOpen('Successfully register', 'close');
-                },
-                error: (err) => {
-                    const {message} = err;
-                    console.error('Failed to register:', err);
-                    this.handlePromptOpen(`Failed to register:${message}`, 'close');
-                }
-            });
-        } else {
-            this.handlePromptOpen('Passwords do not match', 'close');
-        }
-    }
-
-    // check confirm password
-    checkConfirmPwd (data: any) {
-        const { password, confirmPwd } = data;
-        return password === confirmPwd; 
-    }
-
-    // show feedback prompt
-    handlePromptOpen (message: string, action: string) {
-        this.registerPrompt.open(message, action, {
-            verticalPosition: this.verticalPosition,
-            duration: 5000
+    this.loading.set(true);
+    const { email, password } = this.form.value;
+    this.accountService.register({ email: email!, password: password! }).subscribe({
+      next: () => {
+        this.loading.set(false);
+        this.snackBar.open('Account created! Please log in.', 'OK', {
+          duration: 4000, verticalPosition: 'top',
         });
-    }
+        if (this.isModal()) { this.switchToLogin.emit(); } else { this.router.navigate(['/login']); }
+      },
+      error: (err) => {
+        this.loading.set(false);
+        const msg = err?.error?.message ?? 'Registration failed. Please try again.';
+        this.snackBar.open(msg, 'Close', { duration: 5000, verticalPosition: 'top' });
+      },
+    });
+  }
 
-    isNotEmptyString (str: string) {
-        return str && str.length > 0;
-    }
+  onLogin() {
+    if (this.isModal()) { this.switchToLogin.emit(); } else { this.router.navigate(['/login']); }
+  }
 
-    onHide (event: MouseEvent) {
-        event.stopPropagation();
-        this.hide.set(!this.hide());
-    }
-
-    onLogin () {
-        this.router.navigate(['/login']);
-    }
-
+  onBack() {
+    if (this.isModal()) { this.close.emit(); } else { this.router.navigate(['/']); }
+  }
 }

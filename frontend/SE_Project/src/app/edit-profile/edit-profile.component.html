@@ -1,64 +1,36 @@
-<app-header></app-header>
+<div @pageAnimation>
+  <app-header></app-header>
 
-<section class="profile">
-  <div class="container">
-    <h2 class="profile__title">Edit Your Profile</h2>
+  <div class="profile-page">
+    <div class="container">
+      <h1 class="pg-title">// EDIT PROFILE</h1>
 
-    <!-- Success / Error messages -->
-    <div class="profile__messages">
-      <p class="success-message" *ngIf="successMessage()">
-        {{ successMessage() }}
-      </p>
-      <p class="error-message" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form" novalidate>
+        <div class="px-field">
+          <label class="px-label" for="pf-name">FULL NAME *</label>
+          <input id="pf-name" class="px-input" type="text" formControlName="full_name" placeholder="Dr. Ada Lovelace" />
+          <span class="px-error" *ngIf="profileForm.get('full_name')?.touched && profileForm.get('full_name')?.invalid">
+            ▸ Full name is required.
+          </span>
+        </div>
+
+        <div class="px-field">
+          <label class="px-label" for="pf-aff">AFFILIATION</label>
+          <input id="pf-aff" class="px-input" type="text" formControlName="affiliation" placeholder="University of Florida" />
+        </div>
+
+        <div class="px-field">
+          <label class="px-label" for="pf-bio">BIO</label>
+          <textarea id="pf-bio" class="px-input px-textarea" formControlName="bio" rows="4" placeholder="A short bio about your research…"></textarea>
+        </div>
+
+        <div class="px-field">
+          <label class="px-label" for="pf-email">EMAIL (READ-ONLY)</label>
+          <input id="pf-email" class="px-input px-input--readonly" type="email" formControlName="email" readonly />
+        </div>
+
+        <button type="submit" class="px-btn profile-form__submit">▶ SAVE PROFILE</button>
+      </form>
     </div>
-
-    <form
-      [formGroup]="profileForm"
-      (ngSubmit)="onSubmit()"
-      class="profile__form"
-    >
-      <div class="form-group">
-        <label for="full_name">Full Name <span class="required">*</span></label>
-        <input
-          id="full_name"
-          type="text"
-          formControlName="full_name"
-          placeholder="Enter your full name"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="affiliation">Affiliation</label>
-        <input
-          id="affiliation"
-          type="text"
-          formControlName="affiliation"
-          placeholder="Your university, institution, or company"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="bio">Bio</label>
-        <textarea
-          id="bio"
-          rows="4"
-          formControlName="bio"
-          placeholder="A short bio about yourself..."
-        ></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email (read-only)</label>
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          placeholder="Email"
-          readonly
-        />
-      </div>
-
-      <button type="submit" class="profile__submit-btn">Save Profile</button>
-    </form>
   </div>
-</section>
+</div>

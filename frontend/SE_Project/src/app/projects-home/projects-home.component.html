@@ -1,117 +1,115 @@
-<app-header></app-header>
+<div @pageAnimation>
+  <app-header></app-header>
 
-<div class="projects-page">
-  <h2 class="projects-page-title">Your Projects</h2>
-  <p class="projects-page-description">
-    Manage and explore your research projects here.
-  </p>
-
-  <button class="add-project-btn" (click)="onCreateProject()">
-    + Create Project
-  </button>
-
-  <p *ngIf="loading()" class="loading-message">Loading your projects...</p>
-  <p *ngIf="errorMessage() && !loading()" class="error-message">
-    {{ errorMessage() }}
-  </p>
-
-  <div class="projects-grid" *ngIf="!loading() && projects().length > 0">
-    <div
-      class="project-card"
-      *ngFor="let project of projects()"
-      (click)="openProject(project.id)"
-    >
-      <div class="project-card-header">
-        <h3 class="project-card-title">{{ project.title }}</h3>
+  <div class="projects-page">
+    <div class="container">
+      <!-- Page header -->
+      <div class="pg-header">
+        <div>
+          <h1 class="pg-title">YOUR PROJECTS</h1>
+          <p class="pg-sub">Manage and explore your research projects here.</p>
+        </div>
+        <button class="px-btn" (click)="onCreateProject()">+ NEW PROJECT</button>
       </div>
-      <div class="project-card-body">
-        <p class="project-card-description">
-          {{ project.description }}
-        </p>
+
+      <!-- Loading -->
+      <div *ngIf="loading()" class="state-msg">
+        <span class="blink">▋</span> LOADING PROJECTS...
+      </div>
+
+      <!-- Empty -->
+      <div *ngIf="!loading() && projects().length === 0" class="state-msg state-msg--empty">
+        <p>NO PROJECTS FOUND.</p>
+        <button class="px-btn" (click)="onCreateProject()" style="margin-top:20px">
+          + CREATE FIRST PROJECT
+        </button>
+      </div>
+
+      <!-- Grid -->
+      <div class="projects-grid" *ngIf="!loading() && projects().length > 0">
+        <div class="proj-card px-card" *ngFor="let project of projects()" (click)="openProject(project.id)">
+          <div class="proj-card__header">
+            <h3 class="proj-card__title">{{ project.title }}</h3>
+            <div class="proj-card__badges">
+              <span class="px-badge" [ngClass]="'px-badge--' + project.status">{{ project.status }}</span>
+              <span class="px-badge px-badge--dim">{{ project.visibility }}</span>
+            </div>
+          </div>
+          <div class="proj-card__body">
+            <p class="proj-card__desc">{{ project.description || 'No description provided.' }}</p>
+            <div class="proj-card__skills" *ngIf="project.required_skills?.length">
+              <span class="skill-chip" *ngFor="let s of project.required_skills.slice(0, 3)">{{ s }}</span>
+              <span class="skill-chip skill-chip--more" *ngIf="project.required_skills.length > 3">
+                +{{ project.required_skills.length - 3 }}
+              </span>
+            </div>
+          </div>
+          <div class="proj-card__footer">
+            <span class="proj-card__cta">▶ OPEN PROJECT</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="modal-backdrop" *ngIf="showCreateModal()">
-    <div class="modal">
-      <div class="modal-header">
-        <h2>Create New Project</h2>
-        <button class="close-btn" (click)="closeModal()">✕</button>
-      </div>
-      <form
-        [formGroup]="createForm"
-        (ngSubmit)="submitCreateForm()"
-        class="modal-form"
-      >
-        <div class="form-group">
-          <label>Title <span class="required">*</span></label>
-          <input type="text" formControlName="title" />
-          <div
-            class="error-msg"
-            *ngIf="
-              createForm.get('title')?.touched &&
-              createForm.get('title')?.invalid
-            "
-          >
-            Title is required.
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Description</label>
-          <textarea formControlName="description"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label>Status <span class="required">*</span></label>
-          <select formControlName="status">
-            <option value="open">Open</option>
-            <option value="closed">Closed</option>
-          </select>
-          <div
-            class="error-msg"
-            *ngIf="
-              createForm.get('status')?.touched &&
-              createForm.get('status')?.invalid
-            "
-          >
-            Status is required.
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Visibility <span class="required">*</span></label>
-          <select formControlName="visibility">
-            <option value="private">Private</option>
-            <option value="public">Public</option>
-          </select>
-          <div
-            class="error-msg"
-            *ngIf="
-              createForm.get('visibility')?.touched &&
-              createForm.get('visibility')?.invalid
-            "
-          >
-            Visibility is required.
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Required Skills (comma separated)</label>
-          <input
-            type="text"
-            formControlName="required_skills"
-            placeholder="e.g. Angular, TypeScript"
-          />
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="modal-cancel-btn" (click)="closeModal()">
-            Cancel
-          </button>
-          <button type="submit" class="modal-submit-btn">Create</button>
-        </div>
-      </form>
+<!-- ── Create Project Modal ── -->
+<div class="px-modal-backdrop" *ngIf="showCreateModal()">
+  <div class="px-modal px-card">
+    <div class="px-modal__header">
+      <span class="px-modal__title">// NEW PROJECT</span>
+      <button class="px-modal__close" (click)="closeModal()">✕</button>
     </div>
+    <form [formGroup]="createForm" (ngSubmit)="submitCreateForm()" class="px-modal__body">
+      <mat-form-field appearance="outline">
+        <mat-label>Title *</mat-label>
+        <input matInput formControlName="title" />
+        <mat-error *ngIf="createForm.get('title')?.hasError('required')">Title is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let o of statusOptions" [value]="o">{{ o | titlecase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Visibility</mat-label>
+        <mat-select formControlName="visibility">
+          <mat-option *ngFor="let o of visibilityOptions" [value]="o">{{ o | titlecase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Required Skills</mat-label>
+        <mat-chip-grid #chipGrid>
+          @for (skill of skills(); track skill) {
+            <mat-chip-row (removed)="handleDeleteSkill(skill)">
+              {{ skill }}<button matChipRemove><mat-icon>cancel</mat-icon></button>
+            </mat-chip-row>
+          }
+          <input
+            [placeholder]="skills().length === 0 ? 'Add skill…' : ''"
+            [matChipInputFor]="chipGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="handleAddSkill($event)"
+          />
+        </mat-chip-grid>
+      </mat-form-field>
+
+      <div class="px-modal__actions">
+        <button type="button" class="px-btn px-btn--ghost" (click)="closeModal()">CANCEL</button>
+        <button type="submit" class="px-btn" [disabled]="submitting()">
+          {{ submitting() ? 'CREATING…' : '▶ CREATE' }}
+        </button>
+      </div>
+    </form>
   </div>
 </div>

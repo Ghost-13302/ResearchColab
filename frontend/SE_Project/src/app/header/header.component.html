@@ -1,76 +1,77 @@
-<header class="header">
-  <div class="container">
-    <div class="header__logo" (click)="goHome()">
-      <img
-        src="assets/icons/the-grid-icon.svg"
-        alt="The Grid Logo"
-        class="header__logo-img"
-      />
-      <h2 class="header__title">The Grid</h2>
+<header class="px-header">
+  <div class="px-header__inner container">
+
+    <!-- Logo -->
+    <div class="px-header__logo" (click)="goHome()">
+      <img src="assets/icons/the-grid-icon.svg" alt="" class="px-header__icon" />
+      <span class="px-header__brand">THE GRID</span>
     </div>
 
-    <nav class="header__nav">
-      <ul class="header__menu">
-        <li class="header__menu-item"><a (click)="goToAbout()">About</a></li>
-        <li class="header__menu-item">
-          <a (click)="goToProjects()">Projects</a>
-        </li>
-        <li class="header__menu-item">
-          <a (click)="goToInvitations()">Invitations</a>
-        </li>
-      </ul>
+    <!-- Desktop Nav -->
+    <nav class="px-header__nav">
+      <a class="px-nav-link" (click)="goToAbout()">ABOUT</a>
+      <a class="px-nav-link" (click)="goToProjects()">PROJECTS</a>
+      <a class="px-nav-link" (click)="goToInvitations()">INVITES</a>
     </nav>
 
-    <div class="header__auth" *ngIf="!isLoggedIn()">
-      <button class="header__btn header__btn--login" (click)="goToLogin()">
-        LOG IN
-      </button>
-      <button class="header__btn header__btn--signup" (click)="goToSignup()">
-        SIGN UP
-      </button>
+    <!-- Auth buttons -->
+    <div class="px-header__auth" *ngIf="!isLoggedIn()">
+      <button class="px-btn px-btn--ghost" (click)="openLogin()">LOG IN</button>
+      <button class="px-btn" (click)="openRegister()">SIGN UP</button>
     </div>
 
-    <div class="header__profile-dropdown" *ngIf="isLoggedIn()">
-      <button class="profile-btn" (click)="toggleDropdown()">
-        <img
-          src="assets/icons/user-icon.png"
-          alt="User Profile"
-          class="profile-img"
-        />
+    <!-- Profile dropdown -->
+    <div class="px-header__user" *ngIf="isLoggedIn()">
+      <button class="px-user-btn" (click)="toggleDropdown()">
+        <span class="px-user-btn__text">▶ PLAYER</span>
+        <span class="px-user-btn__arrow">{{ dropdownOpen() ? '▲' : '▼' }}</span>
       </button>
-      <div class="dropdown-menu" *ngIf="dropdownOpen()">
-        <a class="dropdown-item" (click)="goToProfile()">Edit Profile</a>
-        <a class="dropdown-item" (click)="logout()">Logout</a>
+      <div class="px-dropdown" *ngIf="dropdownOpen()">
+        <a class="px-dropdown__item" (click)="goToProfile()">▸ EDIT PROFILE</a>
+        <a class="px-dropdown__item px-dropdown__item--danger" (click)="logout()">▸ LOGOUT</a>
       </div>
     </div>
 
-    <!-- mobile menu toggle -->
-    <button
-      class="header__menu-toggle"
-      (click)="mobileMenuOpen.set(!mobileMenuOpen())"
-      aria-label="Open menu"
-    >
-      ⋮
+    <!-- Mobile burger -->
+    <button class="px-burger" (click)="mobileMenuOpen.set(!mobileMenuOpen())" aria-label="Toggle menu">
+      {{ mobileMenuOpen() ? '✕' : '≡' }}
     </button>
+  </div>
 
-    <!-- mobile pop-up -->
-    <div class="mobile-menu" *ngIf="mobileMenuOpen()">
-      <a (click)="goToAbout()">About</a>
-      <a (click)="goToProjects()">Projects</a>
-      <a (click)="goToInvitations()">Invitations</a>
-      <ng-container *ngIf="!isLoggedIn()">
-        <a (click)="goToLogin()">Log In</a>
-        <a (click)="goToSignup()">Sign Up</a>
-      </ng-container>
-      <ng-container *ngIf="isLoggedIn()">
-        <a (click)="goToProfile()">Profile</a>
-        <a (click)="logout()">Logout</a>
-      </ng-container>
-    </div>
+  <!-- Mobile menu -->
+  <div class="px-mobile-menu" *ngIf="mobileMenuOpen()">
+    <a class="px-mobile-link" (click)="goToAbout()">▸ ABOUT</a>
+    <a class="px-mobile-link" (click)="goToProjects()">▸ PROJECTS</a>
+    <a class="px-mobile-link" (click)="goToInvitations()">▸ INVITES</a>
+    <div class="px-mobile-divider"></div>
+    <ng-container *ngIf="!isLoggedIn()">
+      <a class="px-mobile-link" (click)="openLogin()">▸ LOG IN</a>
+      <a class="px-mobile-link px-mobile-link--accent" (click)="openRegister()">▸ SIGN UP</a>
+    </ng-container>
+    <ng-container *ngIf="isLoggedIn()">
+      <a class="px-mobile-link" (click)="goToProfile()">▸ PROFILE</a>
+      <a class="px-mobile-link px-mobile-link--danger" (click)="logout()">▸ LOGOUT</a>
+    </ng-container>
   </div>
 </header>
 
+<!-- ── Auth Modals (rendered over current page) ── -->
+<app-login
+  *ngIf="showLoginModal()"
+  [isModal]="true"
+  (close)="closeAuth()"
+  (switchToRegister)="openRegister()">
+</app-login>
+
+<app-registration
+  *ngIf="showRegisterModal()"
+  [isModal]="true"
+  (close)="closeAuth()"
+  (switchToLogin)="openLogin()">
+</app-registration>
+
+<!-- ── Invitations Modal ── -->
 <app-invitations-modal
   *ngIf="showInvitationsModal()"
-  (close)="hideInvitationsModal()"
-></app-invitations-modal>
+  (close)="hideInvitationsModal()">
+</app-invitations-modal>

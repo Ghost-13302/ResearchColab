@@ -1,16 +1,29 @@
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 
 html {
   @include mat.theme((
     color: (
-      theme-type: light,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
+      theme-type: dark,
+      primary: mat.$yellow-palette,
     ),
-    typography: Roboto,
     density: 0,
   ));
+}
+
+/* ── Flatten all Material border-radius to 0 for pixel look ── */
+.mat-mdc-form-field .mdc-text-field {
+  border-radius: 0 !important;
+}
+.mdc-text-field--outlined .mdc-notched-outline__leading,
+.mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-radius: 0 !important;
+}
+.mat-mdc-chip { border-radius: 0 !important; }
+.mat-mdc-option { font-family: 'Funnel Sans', sans-serif !important; }
+.mat-mdc-select-panel { border-radius: 0 !important; }
+.mat-mdc-snack-bar-container {
+  border-radius: 0 !important;
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 0.5rem !important;
+  line-height: 1.8 !important;
 }

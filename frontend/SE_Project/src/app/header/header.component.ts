@@ -2,78 +2,75 @@ import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InvitationsModalComponent } from '../invitations-modal/invitations-modal.component';
+import { LoginComponent } from '../login/login.component';
+import { RegistrationComponent } from '../registration/registration.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, InvitationsModalComponent],
+  imports: [CommonModule, InvitationsModalComponent, LoginComponent, RegistrationComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  mobileMenuOpen = signal(false);
-
-  // controls the profile dropdown
-  dropdownOpen = signal(false);
-
-  // controls whether the invitations modal is shown
+  mobileMenuOpen   = signal(false);
+  dropdownOpen     = signal(false);
   showInvitationsModal = signal(false);
+  showLoginModal   = signal(false);
+  showRegisterModal = signal(false);
 
   constructor(private router: Router) {}
 
   isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('token');
+    return !!localStorage.getItem('token');
   }
 
-  goHome() {
-    this.router.navigate(['/']);
+  navigate(path: string) {
+    this.mobileMenuOpen.set(false);
+    this.dropdownOpen.set(false);
+    this.router.navigate([path]);
   }
 
-  goToLogin() {
-    this.router.navigate(['/login']);
-  }
-
-  goToSignup() {
-    this.router.navigate(['/registration']);
-  }
-
-  goToProfile() {
-    this.router.navigate(['/edit-profile']);
-  }
+  goHome()    { this.navigate('/'); }
+  goToAbout() { this.navigate('/about'); }
+  goToProfile() { this.navigate('/edit-profile'); }
 
   goToProjects() {
-    if (!this.isLoggedIn()) {
-      this.router.navigate(['/login']);
-    } else {
-      this.router.navigate(['/projects']);
-    }
+    this.mobileMenuOpen.set(false);
+    if (!this.isLoggedIn()) { this.openLogin(); } else { this.navigate('/projects'); }
   }
 
-  // called when “Invitations” is clicked in the nav
   goToInvitations() {
-    if (!this.isLoggedIn()) {
-      this.router.navigate(['/login']);
-    } else {
-      this.showInvitationsModal.set(true);
-    }
+    this.mobileMenuOpen.set(false);
+    if (!this.isLoggedIn()) { this.openLogin(); } else { this.showInvitationsModal.set(true); }
   }
 
-  goToAbout() {
-    this.router.navigate(['/about']);
+  openLogin() {
+    this.showRegisterModal.set(false);
+    this.showLoginModal.set(true);
+    this.mobileMenuOpen.set(false);
   }
 
-  // hide the invitations modal
-  hideInvitationsModal() {
-    this.showInvitationsModal.set(false);
+  openRegister() {
+    this.showLoginModal.set(false);
+    this.showRegisterModal.set(true);
+    this.mobileMenuOpen.set(false);
   }
+
+  closeAuth() {
+    this.showLoginModal.set(false);
+    this.showRegisterModal.set(false);
+  }
+
+  hideInvitationsModal() { this.showInvitationsModal.set(false); }
+
+  toggleDropdown() { this.dropdownOpen.set(!this.dropdownOpen()); }
 
   logout() {
-    sessionStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     this.dropdownOpen.set(false);
+    this.mobileMenuOpen.set(false);
     this.router.navigate(['/']);
-  }
-
-  toggleDropdown() {
-    this.dropdownOpen.set(!this.dropdownOpen());
   }
 }

@@ -1,90 +1,74 @@
-<app-header></app-header>
+<div @pageAnimation>
+  <app-header></app-header>
 
-<section class="project">
-  <div class="container">
-    <h2 class="project_title">Edit Your Project</h2>
-    <form [formGroup]="projectForm" class="project_form">
-      <div class="form-group">
-        <label for="title">Title <span class="required">*</span></label>
-        <input
-          id="title"
-          type="text"
-          formControlName="title"
-          placeholder="Enter your project title"
-        />
-      </div>
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea
-          id="description"
-          rows="4"
-          formControlName="description"
-          placeholder="Enter your project description"
-        ></textarea>
-      </div>
-      <div class="form-group">
-        <label for="required_skills">Required Skills</label>
-        <div class="input-field">
+  <div class="editor-page">
+    <div class="container">
+      <h1 class="pg-title">// EDIT PROJECT</h1>
+
+      <form [formGroup]="projectForm" class="editor-form">
+        <!-- Title -->
+        <mat-form-field appearance="outline">
+          <mat-label>Title *</mat-label>
+          <input matInput formControlName="title" placeholder="Project title" />
+          <mat-error *ngIf="projectForm.get('title')?.hasError('required')">Title is required.</mat-error>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="4" placeholder="Describe your project…"></textarea>
+        </mat-form-field>
+
+        <!-- Skills chip input -->
+        <mat-form-field appearance="outline">
+          <mat-label>Required Skills</mat-label>
           <mat-chip-grid #chipGrid>
             @for (skill of skills(); track skill) {
-            <mat-chip-row (removed)="handleDeleteSkill(skill)">
-              {{ skill }}
-              <button matChipRemove>
-                <mat-icon>cancel</mat-icon>
-              </button>
-            </mat-chip-row>
+              <mat-chip-row (removed)="handleDeleteSkill(skill)">
+                {{ skill }}<button matChipRemove><mat-icon>cancel</mat-icon></button>
+              </mat-chip-row>
             }
             <input
-              id="skills"
-              [placeholder]="
-                skills().length === 0
-                  ? 'Add a skill (e.g. JavaScript, Go, Angular)'
-                  : ''
-              "
+              [placeholder]="skills().length === 0 ? 'Type skill + Enter' : ''"
               [matChipInputFor]="chipGrid"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur"
               (matChipInputTokenEnd)="handleAddSkill($event)"
-              class="skill-input"
             />
           </mat-chip-grid>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="Status">Status <span class="required">*</span></label>
-        <div class="input-field">
-          <mat-select id="status" formControlName="status">
-            @for (option of statusOptions; track option) {
-            <mat-option [value]="option">{{ option }}</mat-option>
+        </mat-form-field>
+
+        <!-- Status -->
+        <mat-form-field appearance="outline">
+          <mat-label>Status *</mat-label>
+          <mat-select formControlName="status">
+            @for (opt of statusOptions; track opt) {
+              <mat-option [value]="opt">{{ opt | titlecase }}</mat-option>
             }
           </mat-select>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="visibility"
-          >Visibility <span class="required">*</span></label
-        >
-        <div class="input-field">
-          <mat-select id="visibility" formControlName="visibility">
-            @for (option of visibilityOptions; track option) {
-            <mat-option [value]="option">{{ option }}</mat-option>
+        </mat-form-field>
+
+        <!-- Visibility -->
+        <mat-form-field appearance="outline">
+          <mat-label>Visibility *</mat-label>
+          <mat-select formControlName="visibility">
+            @for (opt of visibilityOptions; track opt) {
+              <mat-option [value]="opt">{{ opt | titlecase }}</mat-option>
             }
           </mat-select>
+        </mat-form-field>
+
+        <div class="editor-actions">
+          <button type="button" class="px-btn" (click)="handleSave()">▶ SAVE PROJECT</button>
+          <button type="button" class="px-btn px-btn--outline" (click)="openInviteModal()">+ INVITE</button>
         </div>
-      </div>
-      <div class="form-actions">
-        <button type="button" (click)="handleSave()" class="project_save-btn">
-          Save Project
-        </button>
-        <button type="button" class="invite-btn" (click)="openInviteModal()">
-          Invite Collaborator
-        </button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</section>
+</div>
+
 <app-invite-collaborator-modal
   *ngIf="showInviteModal()"
   [projectId]="projectId"
-  (close)="closeInviteModal()"
-></app-invite-collaborator-modal>
+  (close)="closeInviteModal()">
+</app-invite-collaborator-modal>

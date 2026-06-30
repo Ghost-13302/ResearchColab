@@ -1,6 +1,9 @@
 # ignore SQLite database files
 *.db
 
+# ignore compiled binaries
+*.exe
+backend/backend
+
 # ignore OS-specific files
 .DS_Store
-backend/go.mod

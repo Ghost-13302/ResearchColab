@@ -1,34 +1,36 @@
-<div class="modal-backdrop">
-  <div class="modal">
-    <div class="modal-header">
-      <h2>Invite Collaborator</h2>
-      <button class="close-btn" (click)="onClose()">✕</button>
+<div class="px-modal-backdrop" (click)="onClose()">
+  <div class="px-modal" (click)="$event.stopPropagation()">
+    <div class="px-modal__header">
+      <h2 class="px-modal__title">// INVITE COLLABORATOR</h2>
+      <button class="px-modal__close" (click)="onClose()">✕</button>
     </div>
-    <form [formGroup]="form" (ngSubmit)="submit()" class="modal-form">
-      <label>Email <span class="required">*</span></label>
-      <input formControlName="email" type="email" />
-      <div
-        class="error"
-        *ngIf="form.get('email')?.touched && form.get('email')?.invalid"
-      >
-        Valid email is required.
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="px-modal__body" novalidate>
+      <div class="px-field">
+        <label class="px-label" for="inv-email">EMAIL *</label>
+        <input id="inv-email" class="px-input" type="email" formControlName="email" placeholder="colleague@university.edu" />
+        <span class="px-error" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+          ▸ Valid email is required.
+        </span>
       </div>
 
-      <label>Role <span class="required">*</span></label>
-      <select formControlName="role">
-        <option value="programmer">Programmer</option>
-        <option value="researcher">Researcher</option>
-      </select>
+      <div class="px-field">
+        <label class="px-label" for="inv-role">ROLE *</label>
+        <select id="inv-role" class="px-input px-select" formControlName="role">
+          <option value="programmer">Programmer</option>
+          <option value="researcher">Researcher</option>
+        </select>
+      </div>
 
-      <div class="actions">
-        <button type="button" (click)="onClose()">Cancel</button>
-        <button type="submit" [disabled]="loading">
-          {{ loading ? "Sending…" : "Send Invitation" }}
+      <p class="px-error" *ngIf="error">▸ {{ error }}</p>
+      <p class="inv-success" *ngIf="success">✔ {{ success }}</p>
+
+      <div class="px-modal__footer">
+        <button type="button" class="px-btn px-btn--ghost" (click)="onClose()">CANCEL</button>
+        <button type="submit" class="px-btn" [disabled]="loading">
+          {{ loading ? '[ SENDING… ]' : '▶ SEND INVITE' }}
         </button>
       </div>
-
-      <p class="error" *ngIf="error">{{ error }}</p>
-      <p class="success" *ngIf="success">{{ success }}</p>
     </form>
   </div>
 </div>

@@ -1,8 +1,7 @@
-// src/app/services/project.service.ts
-
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Project {
   id?: number;
@@ -25,83 +24,46 @@ export interface Invitation {
   created_at: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ProjectService {
-  private baseUrl = 'https://researchcolab.onrender.com/projects';
+  private baseUrl = `${environment.apiUrl}/projects`;
 
   constructor(private http: HttpClient) {}
 
   getUserProjects(): Observable<{ projects: Project[] }> {
     return this.http
-      .get<{ projects: Project[] }>(`${this.baseUrl}/user`, {
-        headers: this.getAuthHeaders(),
-      })
-      .pipe(
-        catchError((error) => {
-          console.error('[ProjectService] getUserProjects error:', error);
-          return of({ projects: [] });
-        })
-      );
+      .get<{ projects: Project[] }>(`${this.baseUrl}/user`)
+      .pipe(catchError((err) => throwError(() => err)));
   }
 
   getAllProjects(): Observable<{ projects: Project[] }> {
     return this.http
-      .get<{ projects: Project[] }>(`${this.baseUrl}`, {
-        headers: this.getAuthHeaders(),
-      })
-      .pipe(
-        catchError((error) => {
-          console.error('[ProjectService] getAllProjects error:', error);
-          return of({ projects: [] });
-        })
-      );
+      .get<{ projects: Project[] }>(this.baseUrl)
+      .pipe(catchError((err) => throwError(() => err)));
   }
 
-  getProjectById(id: number): Observable<Project | null> {
+  getProjectById(id: number): Observable<Project> {
     return this.http
-      .get<Project>(`${this.baseUrl}/${id}`, {
-        headers: this.getAuthHeaders(),
-      })
-      .pipe(
-        catchError((error) => {
-          console.error('[ProjectService] getProjectById error:', error);
-          return of(null);
-        })
-      );
+      .get<Project>(`${this.baseUrl}/${id}`)
+      .pipe(catchError((err) => throwError(() => err)));
   }
 
-  createProject(projectData: Project): Observable<any> {
+  createProject(projectData: Project): Observable<{ message: string }> {
     return this.http
-      .post<any>(`${this.baseUrl}`, projectData, {
-        headers: this.getAuthHeaders(),
-      })
-      .pipe(
-        catchError((error) => {
-          console.error('[ProjectService] createProject error:', error);
-          return of({ error: 'Failed to create project' });
-        })
-      );
+      .post<{ message: string }>(this.baseUrl, projectData)
+      .pipe(catchError((err) => throwError(() => err)));
   }
 
   updateProject(id: number, project: Project): Observable<Project> {
-    return this.http.put<Project>(`${this.baseUrl}/${id}`, project, {
-      headers: this.getAuthHeaders(),
-    });
+    return this.http
+      .put<Project>(`${this.baseUrl}/${id}`, project)
+      .pipe(catchError((err) => throwError(() => err)));
   }
 
   getInvitations(): Observable<{ invitations: Invitation[] }> {
     return this.http
-      .get<{ invitations: Invitation[] }>(`${this.baseUrl}/invitations`, {
-        headers: this.getAuthHeaders(),
-      })
-      .pipe(
-        catchError((error) => {
-          console.error('[ProjectService] getInvitations error:', error);
-          return of({ invitations: [] });
-        })
-      );
+      .get<{ invitations: Invitation[] }>(`${this.baseUrl}/invitations`)
+      .pipe(catchError((err) => throwError(() => err)));
   }
 
   inviteCollaborator(
@@ -112,15 +74,9 @@ export class ProjectService {
     return this.http
       .post<{ message: string }>(
         `${this.baseUrl}/${projectId}/collaborators`,
-        { email, role },
-        { headers: this.getAuthHeaders() }
+        { email, role }
       )
-      .pipe(
-        catchError((error) => {
-          console.error('[ProjectService] inviteCollaborator error:', error);
-          return of({ message: 'Failed to send invitation' });
-        })
-      );
+      .pipe(catchError((err) => throwError(() => err)));
   }
 
   respondToInvitation(
@@ -131,22 +87,8 @@ export class ProjectService {
     return this.http
       .post<{ message: string }>(
         `${this.baseUrl}/${projectId}/collaborators/invitations/${invitationId}/${action}`,
-        {},
-        { headers: this.getAuthHeaders() }
+        {}
       )
-      .pipe(
-        catchError((error) => {
-          console.error('[ProjectService] respondToInvitation error:', error);
-          return of({ message: 'Failed to respond to invitation' });
-        })
-      );
-  }
-
-  private getAuthHeaders(): HttpHeaders {
-    const token = sessionStorage.getItem('token') || '';
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    });
+      .pipe(catchError((err) => throwError(() => err)));
   }
 }
