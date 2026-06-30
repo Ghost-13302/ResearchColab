@@ -4,6 +4,7 @@ import (
 	"backend/database"
 	_ "backend/docs"
 	"backend/routes"
+	"mime"
 	"os"
 	"strings"
 	"time"
@@ -19,6 +20,9 @@ import (
 // @host     inferred at runtime
 // @BasePath /
 func main() {
+	mime.AddExtensionType(".js", "application/javascript")
+	mime.AddExtensionType(".css", "text/css")
+
 	// initialize DB
 	database.InitDatabase()
 
